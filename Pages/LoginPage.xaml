@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diplom.LoginPage"
+             NavigationPage.HasBackButton="False">
+
+    <ScrollView HorizontalOptions="Center" >
+        <StackLayout>
+            <Label Text="Вход" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,200" />
+            <Entry x:Name="Logintxt" Placeholder="Логин" PlaceholderColor="Black" WidthRequest="500" Margin="0,0,0,50" />
+            <Entry x:Name="Passwordtxt" Placeholder="Пароль" PlaceholderColor="Black" WidthRequest="500" Margin="0,0,0,50" IsPassword="True" />
+            <Button WidthRequest="200" Text="Войти" Clicked="TryLogin" />
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
