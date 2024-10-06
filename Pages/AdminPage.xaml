@@ -6,23 +6,54 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="14*" />
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
-        <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
+        <StackLayout Grid.Column="0"
+                     Grid.Row="0"
+                     Orientation="Horizontal">
+
+            <Border Stroke="Gray"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    Margin="30,0,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="190"/>
+                </Border.StrokeShape>
+                <Image/>
+            </Border>
+            <Label Text="com.name"
+                   VerticalTextAlignment="Center"
+                   Margin="30,0,0,0"/>
 
         </StackLayout>
 
-        <StackLayout Grid.Column="0" Grid.Row="1" Background="Red">
-
+        <StackLayout Grid.Column="1"
+                Grid.Row="0">
+            <SearchBar Placeholder="Поиск"
+                    PlaceholderColor="Black"
+                    WidthRequest="400"
+                    HeightRequest="40"/>
         </StackLayout>
 
-        <StackLayout Grid.Column="1" Grid.Row="1">
-            
+        <StackLayout Grid.Column="0"
+                     Grid.Row="1">
+            <Button Text="Входящие"/>
+            <Button Text="Исходящие"/>
+        </StackLayout>
+
+        <StackLayout Grid.Column="1"
+                     Grid.Row="1"
+                     Background="Yellow">
+            <ScrollView>
+                <ListView Loaded="LoadInputMail"
+                          x:Name="InputMail">
+                </ListView>
+            </ScrollView>
         </StackLayout>
     </Grid>
 

@@ -32,7 +32,7 @@ namespace Diplom
                         switch (user.UserRole.RoleName)
                         {
                             case "админ":
-                            await Navigation.PushAsync(new AdminPage());
+                            await Navigation.PushAsync(new AdminPage(user));
                             break;
                         }
                     }
