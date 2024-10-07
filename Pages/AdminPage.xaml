@@ -33,17 +33,32 @@
         </StackLayout>
 
         <StackLayout Grid.Column="1"
-                Grid.Row="0">
+                     Grid.Row="0">
             <SearchBar Placeholder="Поиск"
-                    PlaceholderColor="Black"
-                    WidthRequest="400"
-                    HeightRequest="40"/>
+                       PlaceholderColor="Black"
+                       WidthRequest="400"
+                       HeightRequest="40"/>
         </StackLayout>
 
         <StackLayout Grid.Column="0"
                      Grid.Row="1">
-            <Button Text="Входящие"/>
-            <Button Text="Исходящие"/>
+            <Button Text="Входящие"
+                    Clicked="LoadInputMail"
+                    Margin="0,5,0,0"/>
+            <Button Text="Исходящие"
+                    Clicked="LoadOutputMail"
+                    Margin="0,5,0,0"/>
+            <Border Stroke="Black"
+                    StrokeThickness="1.5"
+                    Margin="0,5,0,5"/>
+            <Button Text="Документы"
+                    Clicked="LoadDocuments"/>
+            <Button Text="Архив документов"
+                    Clicked="LoadArchiveDocuments"
+                    Margin="0,5,0,0"/>
+            <Button Text="Удаленные документы"
+                    Clicked="LoadDeletedDocuments"
+                    Margin="0,5,0,0"/>
         </StackLayout>
 
         <StackLayout Grid.Column="1"
@@ -51,7 +66,7 @@
                      Background="Yellow">
             <ScrollView>
                 <ListView Loaded="LoadInputMail"
-                          x:Name="InputMail">
+                          x:Name="Mail" >
                 </ListView>
             </ScrollView>
         </StackLayout>
