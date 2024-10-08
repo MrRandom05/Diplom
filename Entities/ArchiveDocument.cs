@@ -15,5 +15,15 @@ namespace Diplom.Entities
         public User Creator { get; set; }
         public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public override T CastFromDocument<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Document CastToDocument()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

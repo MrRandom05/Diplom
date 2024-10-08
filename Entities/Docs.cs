@@ -8,5 +8,8 @@ namespace Diplom.Entities
 {
     public abstract class Docs
     {
+        public abstract Document CastToDocument();
+
+        public abstract T CastFromDocument<T>();
     }
 }

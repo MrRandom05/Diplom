@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,20 @@ namespace Diplom.Entities
         public User Creator { get; set; }
         public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public static Document Of(string name, byte[] data, DocumentStatus status, User creator, Role privatelvl)
+        {
+            return new Document() {DocumentName = name, DocumentData = data, documentStatus = status, Creator = creator, PrivateLevel = privatelvl, CreationDate = DateTime.Now};
+        }
+
+        public override T CastFromDocument<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Document CastToDocument()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

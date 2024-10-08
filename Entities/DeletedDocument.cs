@@ -15,5 +15,20 @@ namespace Diplom.Entities
         public User Creator { get; set; }
         public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public static DeletedDocument Of(string name, byte[] data, DocumentStatus status, User creator, Role privatelvl)
+        {
+            return new DeletedDocument() { DeletedDocumentName = name, DeletedDocumentData = data, documentStatus = status, Creator = creator, PrivateLevel = privatelvl, CreationDate = DateTime.Now};
+        }
+
+        public override T CastFromDocument<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Document CastToDocument()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
