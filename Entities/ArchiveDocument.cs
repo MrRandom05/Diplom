@@ -16,9 +16,14 @@ namespace Diplom.Entities
         public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public override T CastFromDocument<T>()
+        public override void CastFromDocument(Document doc)
         {
-            throw new NotImplementedException();
+            ArchiveDocumentName = doc.DocumentName;
+            ArchiveDocumentData = doc.DocumentData;
+            documentStatus = doc.documentStatus;
+            Creator = doc.Creator;
+            PrivateLevel = doc.PrivateLevel;
+            CreationDate = DateTime.Now;
         }
 
         public override Document CastToDocument()

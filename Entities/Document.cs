@@ -22,7 +22,7 @@ namespace Diplom.Entities
             return new Document() {DocumentName = name, DocumentData = data, documentStatus = status, Creator = creator, PrivateLevel = privatelvl, CreationDate = DateTime.Now};
         }
 
-        public override T CastFromDocument<T>()
+        public override void CastFromDocument(Document doc)
         {
             throw new NotImplementedException();
         }

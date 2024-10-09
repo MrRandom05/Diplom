@@ -10,6 +10,6 @@ namespace Diplom.Entities
     {
         public abstract Document CastToDocument();
 
-        public abstract T CastFromDocument<T>();
+        public abstract void CastFromDocument(Document doc);
     }
 }
