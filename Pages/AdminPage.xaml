@@ -42,7 +42,10 @@
             <SearchBar Placeholder="Поиск"
                        PlaceholderColor="Black"
                        WidthRequest="400"
-                       HeightRequest="40"/>
+                       HeightRequest="40"
+                       x:Name="Searcher"
+                       SearchButtonPressed="SearchByListViewType"
+                       TextChanged="ClearSearchResults"/>
         </StackLayout>
 
         <StackLayout Grid.Column="0"

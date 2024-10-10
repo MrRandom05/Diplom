@@ -6,12 +6,19 @@ using Microsoft.Maui.Handlers;
 
 namespace Diplom
 {
-    public enum ListType{
+    public enum ListType
+    {
         Input,
         Output,
         Documents,
         ArchiveDocuments,
         DeletedDocuments
+    }
+
+    public enum SortType
+    {
+        Ascending,
+        Descending
     }
     public partial class AdminPage : ContentPage
     {
@@ -41,12 +48,93 @@ namespace Diplom
                 return cell;
             });
         }
+        
         private void SetInputMailHeader()
         {
             HorizontalStackLayout stack = new();
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="От", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Тема", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Дата отправки", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
+            var sender = new Label {FontSize = 16, WidthRequest = 200, Text="От", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var title = new Label {FontSize = 16, WidthRequest = 200, Text="Тема", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата отправки", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
+
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var mail = Mail.ItemsSource as List<UserMail>;
+                
+                switch (lbl.Text)
+                {
+                    case "От":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.Sender).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.Sender).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Тема":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.UserEmailTitle).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.UserEmailTitle).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Дата отправки":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.SendDate).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.SendDate).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            sender.GestureRecognizers.Add(tap);
+            title.GestureRecognizers.Add(tap);
+            date.GestureRecognizers.Add(tap);
+            stack.Add(sender);
+            stack.Add(title);
+            stack.Add(date);
             Mail.Header = stack;
         }
 
@@ -77,9 +165,89 @@ namespace Diplom
         private void SetOutputMailHeader()
         {
             HorizontalStackLayout stack = new();
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Кому", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Тема", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Дата отправки", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
+            var getter = new Label {FontSize = 16, WidthRequest = 200, Text="Кому", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var title = new Label {FontSize = 16, WidthRequest = 200, Text="Тема", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата отправки", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
+
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var mail = Mail.ItemsSource as List<UserMail>;
+                
+                switch (lbl.Text)
+                {
+                    case "Кому":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.Getter).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.Getter).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Тема":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.UserEmailTitle).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.UserEmailTitle).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Дата отправки":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.SendDate).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.SendDate).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            getter.GestureRecognizers.Add(tap);
+            title.GestureRecognizers.Add(tap);
+            date.GestureRecognizers.Add(tap);
+            stack.Add(getter);
+            stack.Add(title);
+            stack.Add(date);
             Mail.Header = stack;
         }
 
@@ -114,9 +282,89 @@ namespace Diplom
         private void SetDocumentsHeader()
         {
             HorizontalStackLayout stack = new();
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Статус", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Дата создания", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
+            var name = new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var status = new Label {FontSize = 16, WidthRequest = 200, Text="Статус", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата создания", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
+
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var mail = Mail.ItemsSource as List<Document>;
+                
+                switch (lbl.Text)
+                {
+                    case "Название":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.DocumentName).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.DocumentName).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Статус":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.documentStatus).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.documentStatus).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Дата создания":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.CreationDate).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.CreationDate).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            name.GestureRecognizers.Add(tap);
+            status.GestureRecognizers.Add(tap);
+            date.GestureRecognizers.Add(tap);
+            stack.Add(name);
+            stack.Add(status);
+            stack.Add(date);
             Mail.Header = stack;
         }
 
@@ -148,9 +396,89 @@ namespace Diplom
         private void SetDelDocumentsHeader()
         {
             HorizontalStackLayout stack = new();
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Удаливший", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Дата удаления", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
+            var name = new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var deleter = new Label {FontSize = 16, WidthRequest = 200, Text="Удаливший", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата удаления", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
+
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var mail = Mail.ItemsSource as List<DeletedDocument>;
+                
+                switch (lbl.Text)
+                {
+                    case "Название":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.DeletedDocumentName).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.DeletedDocumentName).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Удаливший":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.Creator).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.Creator).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Дата удаления":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.CreationDate).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.CreationDate).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            name.GestureRecognizers.Add(tap);
+            deleter.GestureRecognizers.Add(tap);
+            date.GestureRecognizers.Add(tap);
+            stack.Add(name);
+            stack.Add(deleter);
+            stack.Add(date);
             Mail.Header = stack;
         }
 
@@ -179,9 +507,89 @@ namespace Diplom
         private void SetArcDocumentsHeader()
         {
             HorizontalStackLayout stack = new();
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Отправил в архив", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
-            stack.Add(new Label {FontSize = 16, WidthRequest = 200, Text="Дата архивации", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center});
+            var name = new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var archiver = new Label {FontSize = 16, WidthRequest = 200, Text="Отправил в архив", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата архивации", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
+
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var mail = Mail.ItemsSource as List<ArchiveDocument>;
+                
+                switch (lbl.Text)
+                {
+                    case "Название":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.ArchiveDocumentName).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.ArchiveDocumentName).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Отправил в архив":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.Creator).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.Creator).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Дата архивации":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(x => x.CreationDate).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.CreationDate).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            name.GestureRecognizers.Add(tap);
+            archiver.GestureRecognizers.Add(tap);
+            date.GestureRecognizers.Add(tap);
+            stack.Add(name);
+            stack.Add(archiver);
+            stack.Add(date);
             Mail.Header = stack;
         }
 
@@ -202,6 +610,7 @@ namespace Diplom
                     SetInputMailHeader();
                     SetInputMailDataTemplate();
                     Mail.ItemsSource = mail;
+                    curListViewType = ListType.Input;
                 }
             }
             catch (Exception ex) {}
@@ -218,6 +627,7 @@ namespace Diplom
                     SetOutputMailHeader();
                     SetOutputMailDataTemplate();
                     Mail.ItemsSource = mail;
+                    curListViewType = ListType.Output;
                 }
             }
             catch (Exception ex) {}
@@ -234,6 +644,7 @@ namespace Diplom
                     SetDocumentsHeader();
                     SetDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
+                    curListViewType = ListType.Documents;
                 }
             }
             catch (Exception ex) {}
@@ -247,9 +658,10 @@ namespace Diplom
                 var docs = db.DeletedDocuments.Include("Creator").Include("documentStatus").ToList();
                 if (docs != null)
                 {
-                    Mail.ItemsSource = docs;
                     SetDelDocumentsHeader();
                     SetDelDocumentsDataTemplate();
+                    Mail.ItemsSource = docs;
+                    curListViewType = ListType.DeletedDocuments;
                 }
             }
             catch (Exception ex) {}
@@ -263,9 +675,10 @@ namespace Diplom
                 var docs = db.ArchiveDocuments.Include("Creator").Include("documentStatus").ToList();
                 if (docs != null)
                 {
-                    Mail.ItemsSource = docs;
                     SetArcDocumentsHeader();
                     SetArcDocumentsDataTemplate();
+                    Mail.ItemsSource = docs;
+                    curListViewType = ListType.ArchiveDocuments;
                 }
             }
             catch (Exception ex) {}
@@ -450,6 +863,124 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
-    
+
+        private async void SearchByListViewType(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Searcher.Text))
+                {
+                    FillListByType(Searcher.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+
+        private void FillListByType(string query)
+        {
+            using AppContext db = new();
+            query = query.ToLower();
+            DateTime date;
+            DateTime.TryParse(query, out date);
+            switch (curListViewType)
+            {
+                case ListType.Input:
+                    {
+                        var mail = db.UsersMails.Include("Sender").Include("Getter").Where(x => x.Getter.UserId == curUser.UserId).ToList();
+                        List<UserMail> res = mail.Where(x => x.Getter.FIO.ToLower().Contains(query) ||
+                        x.UserEmailTitle.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = mail.Where(x => x.SendDate.Date == date.Date).ToList();
+                        }
+                        SetInputMailDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+                case ListType.Output:
+                    {
+                        var mail = db.UsersMails.Include("Sender").Include("Getter").Where(x => x.Sender.UserId == curUser.UserId).ToList();
+                        List<UserMail> res = mail.Where(x => x.Sender.FIO.ToLower().Contains(query) ||
+                        x.UserEmailTitle.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = mail.Where(x => x.SendDate.Date == date.Date).ToList();
+                        }
+                        SetOutputMailDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+                case ListType.Documents:
+                    {
+                        var docs = db.Documents.Include("Creator").Include("documentStatus").ToList();
+                        List<Document> res = docs.Where(x => x.DocumentName.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
+                        }
+                        SetDocumentsDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+                case ListType.ArchiveDocuments:
+                    {
+                        var docs = db.ArchiveDocuments.Include("Creator").Include("documentStatus").ToList();
+                        List<ArchiveDocument> res = docs.Where(x => x.ArchiveDocumentName.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
+                        }
+                        SetDocumentsDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+                case ListType.DeletedDocuments:
+                    {
+                        var docs = db.DeletedDocuments.Include("Creator").Include("documentStatus").ToList();
+                        List<DeletedDocument> res = docs.Where(x => x.DeletedDocumentName.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
+                        }
+                        SetDocumentsDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+            }
+        }
+
+        private void FillListByBaseData()
+        {
+            switch(curListViewType)
+            {
+                case ListType.ArchiveDocuments:
+                    GetArcDocs();
+                    break;
+                case ListType.DeletedDocuments:
+                    GetDelDocs();
+                    break;
+                case ListType.Documents:
+                    GetDocs();
+                    break;
+                case ListType.Input:
+                    GetInputMail();
+                    break;
+                case ListType.Output:
+                    GetOutputMail();
+                    break;
+            }
+        }
+
+        private void ClearSearchResults(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(Searcher.Text))
+            {
+                FillListByBaseData();
+            }
+        }
+
     }
 }
