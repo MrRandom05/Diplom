@@ -12,7 +12,8 @@ namespace Diplom
         Output,
         Documents,
         ArchiveDocuments,
-        DeletedDocuments
+        DeletedDocuments,
+        Users
     }
 
     public enum SortType
@@ -22,9 +23,12 @@ namespace Diplom
     }
     public partial class AdminPage : ContentPage
     {
+        #region private vars
         private User curUser;
         private ListType curListViewType = ListType.Input;
+        #endregion
 
+        #region List view styles
         private void SetInputMailDataTemplate()
         {
             Mail.ItemTemplate = new DataTemplate(() =>
@@ -511,7 +515,7 @@ namespace Diplom
             var archiver = new Label {FontSize = 16, WidthRequest = 200, Text="Отправил в архив", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата архивации", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var tap = new TapGestureRecognizer();
-            tap.Tapped += (s, e) =>
+            tap.Tapped += async (s, e) =>
             {
                 Label lbl = s as Label;
                 HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
@@ -542,7 +546,7 @@ namespace Diplom
                     }
                 
                 var mail = Mail.ItemsSource as List<ArchiveDocument>;
-                
+
                 switch (lbl.Text)
                 {
                     case "Название":
@@ -592,13 +596,120 @@ namespace Diplom
             stack.Add(date);
             Mail.Header = stack;
         }
+        
+        private void SetUsersHeader()
+        {
+            HorizontalStackLayout stack = new();
+            var login = new Label {FontSize = 16, WidthRequest = 200, Text="Логин", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var fio = new Label {FontSize = 16, WidthRequest = 200, Text="ФИО", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var role = new Label {FontSize = 16, WidthRequest = 200, Text="Роль", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += async (s, e) =>
+            {
+                Label lbl = s as Label;
+                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
+                var lbls = parent.Children.Where(x => x is Label).ToList();
+                string asc = "↑";
+                string desc = "↓";
+                SortType sort = SortType.Descending;
 
+                foreach(var lable in lbls)
+                    {
+                        var l = lable as Label;
+                        if (l.Text.Contains(asc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Descending;
+                            }
+                        }
+                        if (l.Text.Contains(desc))
+                        {
+                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
+                            if (l == lbl)
+                            {
+                                sort = SortType.Ascending;
+                            }
+                        }
+                    }
+                
+                var users = Mail.ItemsSource as List<User>;
+
+                switch (lbl.Text)
+                {
+                    case "Логин":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = users.OrderBy(x => x.Login).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = users.OrderByDescending(x => x.Login).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "ФИО":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = users.OrderBy(x => x.FIO).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = users.OrderByDescending(x => x.FIO).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                    case "Роль":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = users.OrderBy(x => x.UserRole.RoleName).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = users.OrderByDescending(x => x.UserRole.RoleName).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
+                }
+
+            };
+            fio.GestureRecognizers.Add(tap);
+            login.GestureRecognizers.Add(tap);
+            role.GestureRecognizers.Add(tap);
+            stack.Add(login);
+            stack.Add(fio);
+            stack.Add(role);
+            Mail.Header = stack;
+        }
+
+        private void SetUsersDataTemplate()
+        {
+             Mail.ItemTemplate = new DataTemplate(() =>
+            {
+                ViewCell cell = new ViewCell();
+                Label login = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label fio = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label role = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                login.SetBinding(Label.TextProperty, "Login");
+                fio.SetBinding(Label.TextProperty, "FIO");
+                role.SetBinding(Label.TextProperty, "UserRole.RoleName");
+                var stack = new HorizontalStackLayout { Children = {login, fio, role} };
+                cell.View = stack;
+                return cell;
+            });
+        }
+        #endregion
         public AdminPage(User user)
         {
             curUser = user;
             InitializeComponent();
         }
 
+        #region get methods
         private void GetInputMail()
         {
             try
@@ -683,7 +794,29 @@ namespace Diplom
             }
             catch (Exception ex) {}
         }
+        
+        private async void GetUsers()
+        {
+            try
+            {
+                using AppContext db = new();
+                var users = db.Users.Include("UserRole").Include("UserStatus").ToList();
+                if (users != null)
+                {
+                    SetUsersHeader();
+                    SetUsersDataTemplate();
+                    Mail.ItemsSource = users;
+                    curListViewType = ListType.Users;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+        #endregion
 
+        #region delegates for xaml
         private void LoadInputMail(object sender, EventArgs e)
         {
             GetInputMail();
@@ -730,6 +863,38 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
+
+        private async void SearchByListViewType(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Searcher.Text))
+                {
+                    FillListByType(Searcher.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+        
+        private void ClearSearchResults(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(Searcher.Text))
+            {
+                FillListByBaseData();
+            }
+        }
+        
+        private void LoadUsers(object sender, EventArgs e)
+        {
+            GetUsers();
+        }
+        
+        #endregion
+
+        #region Context actions
 
         private async void DownloadDoc(object sender, EventArgs e)
         {
@@ -864,21 +1029,10 @@ namespace Diplom
             }
         }
 
-        private async void SearchByListViewType(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(Searcher.Text))
-                {
-                    FillListByType(Searcher.Text);
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "Ок");
-            }
-        }
+        #endregion
 
+        #region other
+        // Надо дописывать каждый новый тип для listview, этот метод для поиска, а следующий для заполнения данными
         private void FillListByType(string query)
         {
             using AppContext db = new();
@@ -949,6 +1103,16 @@ namespace Diplom
                         Mail.ItemsSource = res;
                     }
                     break;
+                case ListType.Users:
+                    {
+                        var users = db.Users.Include("UserRole").Include("UserStatus").ToList();
+                        List<User> res = users.Where(x => x.Login.ToLower().Contains(query)).ToList();
+                        res.AddRange(db.Users.Where(x => x.FIO.ToLower().Contains(query)).ToList());
+                        res.AddRange(db.Users.Where(x => x.UserRole.RoleName.ToLower().Contains(query)).ToList());
+                        SetDocumentsDataTemplate();
+                        Mail.ItemsSource = res;
+                    }
+                    break;
             }
         }
 
@@ -971,16 +1135,11 @@ namespace Diplom
                 case ListType.Output:
                     GetOutputMail();
                     break;
+                case ListType.Users:
+                    GetUsers();
+                    break;
             }
         }
-
-        private void ClearSearchResults(object sender, TextChangedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(Searcher.Text))
-            {
-                FillListByBaseData();
-            }
-        }
-
+        #endregion
     }
 }

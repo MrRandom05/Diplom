@@ -67,6 +67,12 @@
             <Button Text="Удаленные документы"
                     Clicked="LoadDeletedDocuments"
                     Margin="0,5,0,0"/>
+            <Border Stroke="Black"
+                    StrokeThickness="1.5"
+                    Margin="0,5,0,5"/>
+            <Button Text="Пользователи"
+                    Clicked="LoadUsers"
+                    Margin="0,5,0,0"/>
         </StackLayout>
 
         <StackLayout Grid.Column="1"
