@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diplom.NewUser">
+
+    <StackLayout HorizontalOptions="Center">
+        <Label Text="Новый пользователь" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,150" />
+        <Entry x:Name="Logintxt" WidthRequest="500" Placeholder="Логин" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Entry x:Name="Passwordtxt" WidthRequest="500" Placeholder="Пароль" PlaceholderColor="Black" Margin="0,0,0,50" IsPassword="True" />
+        <Entry x:Name="FIOtxt" WidthRequest="500" Placeholder="ФИО" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Label Text="Роль" />
+        <Picker x:Name="RolePick" WidthRequest="500" Loaded="LoadRoles" />
+
+        <Button WidthRequest="250" Text="Создать" Clicked="CreateUser" Margin="0,50,0,0" />
+    </StackLayout>
+
+</ContentPage>

@@ -6,6 +6,7 @@ using Microsoft.Maui.Handlers;
 
 namespace Diplom
 {
+    #region enums
     public enum ListType
     {
         Input,
@@ -21,6 +22,7 @@ namespace Diplom
         Ascending,
         Descending
     }
+    #endregion
     public partial class AdminPage : ContentPage
     {
         #region private vars
@@ -850,12 +852,19 @@ namespace Diplom
                 var result = await FilePicker.Default.PickAsync();
                 if (result != null)
                 {
-                    var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
-                    var creator = db.Users.Include("UserRole").First(x => x.UserId == curUser.UserId);
-                    var priv = creator.UserRole;
-                    db.Documents.Add(Document.Of(result.FileName, File.ReadAllBytes(result.FullPath), status, creator, priv));
-                    db.SaveChanges();
-                    GetDocs();
+                    if (db.Documents.Where(x => x.DocumentName == result.FileName).Any())
+                    {
+                        await DisplayAlert("Ошибка", "Файл с таким названием уже существует", "Ок");
+                    }
+                    else
+                    {
+                        var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
+                        var creator = db.Users.Include("UserRole").First(x => x.UserId == curUser.UserId);
+                        var priv = creator.UserRole;
+                        db.Documents.Add(Document.Of(result.FileName, File.ReadAllBytes(result.FullPath), status, creator, priv));
+                        db.SaveChanges();
+                        GetDocs();
+                    }
                 }
             }
             catch (Exception ex)
@@ -890,6 +899,30 @@ namespace Diplom
         private void LoadUsers(object sender, EventArgs e)
         {
             GetUsers();
+        }
+        
+        private async void CreateMail(object sender, EventArgs e)
+        {
+            try
+            {
+                await Navigation.PushAsync(new NewMail(curUser));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+
+        private async void CreateUser(object sender, EventArgs e)
+        {
+            try
+            {
+                await Navigation.PushAsync(new NewUser());   
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
         }
         
         #endregion
@@ -1029,6 +1062,11 @@ namespace Diplom
             }
         }
 
+        private void EditUser(object sender, EventArgs e)
+        {
+            // W.I.P.
+        }
+
         #endregion
 
         #region other
@@ -1140,6 +1178,7 @@ namespace Diplom
                     break;
             }
         }
+
         #endregion
     }
 }

@@ -35,9 +35,13 @@ namespace Diplom
         private void CreateSampleData()
         {
             Roles.Add(Role.Of("админ"));
+            Roles.Add(Role.Of("руководитель"));
+            Roles.Add(Role.Of("работник"));
             UsersStatuses.Add(UserStatus.Of("работает"));
+            UsersStatuses.Add(UserStatus.Of("в отпуске"));
+            UsersStatuses.Add(UserStatus.Of("больничный"));
             SaveChanges();
-            Users.Add(User.Of(Roles.First(), "1", "1", "sdjfhb jk wsofijg", UsersStatuses.First()));
+            Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First()));
             SaveChanges();
         }
     }
