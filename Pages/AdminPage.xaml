@@ -48,7 +48,14 @@
                        x:Name="Searcher"
                        SearchButtonPressed="SearchByListViewType"
                        TextChanged="ClearSearchResults"/>
+            
         </StackLayout>
+        <Button Grid.Column="1"
+                Grid.Row="0"
+                HorizontalOptions="End"
+                Text="profile" 
+                Clicked="OpenProfile"/>
+
 
         <StackLayout Grid.Column="0"
                      Grid.Row="1">

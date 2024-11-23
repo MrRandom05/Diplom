@@ -78,7 +78,7 @@ namespace Diplom
                 {
                     using AppContext db = new();
                     var gettxt = GetterPick.SelectedItem as string;
-                    var getter = db.Users.First(x => x.FIO == gettxt);
+                    var getter = db.Users.Include("UserRole").First(x => x.FIO == gettxt);
                     var senderUser = db.Users.First(x => x.UserId == curUser.UserId);
                     UserMail mail = new UserMail() { Getter = getter, SendDate = DateTime.Now, Sender = senderUser, UserEmailTitle = Themetxt.Text, UserEmailBody = Texttxt.Text };
                     if (attachedFiles.Count() > 0)
@@ -95,7 +95,7 @@ namespace Diplom
                             {
                                 var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
                                 var creator = db.Users.Include("UserRole").First(x => x.UserId == curUser.UserId);
-                                var priv = creator.UserRole;
+                                var priv = getter.UserRole;
                                 var doc = Document.Of(a.FileName, File.ReadAllBytes(a.FullPath), status, creator, priv);
                                 db.Documents.Add(doc);
                                 db.SaveChanges();

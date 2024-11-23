@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diplom.EditUser">
+
+    <StackLayout HorizontalOptions="Center">
+        <Label Text="Изменение пользователя" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,100" />
+        <Entry x:Name="Logintxt" WidthRequest="500" Placeholder="Логин" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Entry x:Name="Passwordtxt" WidthRequest="500" Placeholder="Пароль" PlaceholderColor="Black" Margin="0,0,0,50" IsPassword="True" />
+        <Entry x:Name="FIOtxt" WidthRequest="500" Placeholder="ФИО" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <StackLayout>
+            <Label Text="Роль" WidthRequest="500" />
+            <Picker x:Name="RolePick" WidthRequest="500" Loaded="LoadRoles" />
+        </StackLayout>
+
+        <Button WidthRequest="250" Text="Изменить" Clicked="Edit" Margin="0,50,0,0" />
+    </StackLayout>
+
+</ContentPage>

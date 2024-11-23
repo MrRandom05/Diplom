@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Diplom.Profile">
 
-    <StackLayout>
-        
+    <StackLayout HorizontalOptions="Center">
+        <Label Text="Профиль" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,100" />
+        <Entry x:Name="Logintxt" WidthRequest="500" Placeholder="Логин" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Entry x:Name="FIOtxt" WidthRequest="500" Placeholder="ФИО" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Entry x:Name="Passwordtxt" WidthRequest="500" Placeholder="Новый пароль" PlaceholderColor="Black" Margin="0,0,0,50" IsPassword="True" />
+
+        <Button WidthRequest="250" Text="Сохранить" Clicked="EditProfile" Margin="0,50,0,0" />
     </StackLayout>
 
 </ContentPage>

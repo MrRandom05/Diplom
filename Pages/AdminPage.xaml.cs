@@ -700,6 +700,13 @@ namespace Diplom
                 fio.SetBinding(Label.TextProperty, "FIO");
                 role.SetBinding(Label.TextProperty, "UserRole.RoleName");
                 var stack = new HorizontalStackLayout { Children = {login, fio, role} };
+                var tap = new TapGestureRecognizer();
+                tap.Tapped += async (s, e) =>
+                {
+                    var user = (s as HorizontalStackLayout).BindingContext as User;
+                    await Navigation.PushAsync(new EditUser(user));
+                };
+                stack.GestureRecognizers.Add(tap);
                 cell.View = stack;
                 return cell;
             });
@@ -925,6 +932,18 @@ namespace Diplom
             }
         }
         
+        private async void OpenProfile(object sender, EventArgs e)
+        {
+            try
+            {
+                await Navigation.PushAsync(new Profile(curUser));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+        
         #endregion
 
         #region Context actions
@@ -1060,11 +1079,6 @@ namespace Diplom
             {
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
-        }
-
-        private void EditUser(object sender, EventArgs e)
-        {
-            // W.I.P.
         }
 
         #endregion
