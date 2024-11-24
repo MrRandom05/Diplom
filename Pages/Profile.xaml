@@ -5,7 +5,9 @@
 
     <StackLayout HorizontalOptions="Center">
         <Label Text="Профиль" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,100" />
+        <Label Text="Логин" />
         <Entry x:Name="Logintxt" WidthRequest="500" Placeholder="Логин" PlaceholderColor="Black" Margin="0,0,0,50" />
+        <Label Text="ФИО" />
         <Entry x:Name="FIOtxt" WidthRequest="500" Placeholder="ФИО" PlaceholderColor="Black" Margin="0,0,0,50" />
         <Entry x:Name="Passwordtxt" WidthRequest="500" Placeholder="Новый пароль" PlaceholderColor="Black" Margin="0,0,0,50" IsPassword="True" />
 

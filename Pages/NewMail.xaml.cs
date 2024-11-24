@@ -108,6 +108,7 @@ namespace Diplom
                         db.UsersMails.Add(mail);
                         db.SaveChanges();
                         await DisplayAlert("Успех", "Письмо отправлено", "Ок");
+                        await Navigation.PopAsync();
                 }
             }
             catch (Exception ex)
