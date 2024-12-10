@@ -40,6 +40,10 @@ namespace Diplom
             UsersStatuses.Add(UserStatus.Of("работает"));
             UsersStatuses.Add(UserStatus.Of("в отпуске"));
             UsersStatuses.Add(UserStatus.Of("больничный"));
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в работе"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "удален"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "восстановлен"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в архиве"});
             SaveChanges();
             Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First()));
             SaveChanges();

@@ -51,7 +51,7 @@ namespace Diplom
                 var result = await FilePicker.Default.PickAsync();
                 if (result != null)
                 {
-                    if (db.Documents.Where(x => x.DocumentName == result.FileName).Any())
+                    if (db.Documents.Any() && db.Documents.Where(x => x.DocumentName == result.FileName).Any())
                     {
                         await DisplayAlert("Ошибка", "Файл с таким названием уже существует", "Ок");
                     }
@@ -121,7 +121,7 @@ namespace Diplom
         
         #endregion
     
-         #region get methods
+        #region get methods
         private void GetInputMail()
         {
             try
@@ -917,7 +917,7 @@ namespace Diplom
     
         #region other
         // Надо дописывать каждый новый тип для listview, этот метод для поиска, а следующий для заполнения данными
-        private void FillListByType(string query)
+         private void FillListByType(string query)
         {
             using AppContext db = new();
             query = query.ToLower();
@@ -971,7 +971,7 @@ namespace Diplom
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
                         }
-                        SetDocumentsDataTemplate();
+                        SetArcDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;
@@ -983,7 +983,7 @@ namespace Diplom
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
                         }
-                        SetDocumentsDataTemplate();
+                        SetDelDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;

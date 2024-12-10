@@ -15,78 +15,83 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
-        <StackLayout Grid.Column="0"
-                     Grid.Row="0"
-                     Orientation="Horizontal">
 
-            <Border Stroke="Gray"
-                    HeightRequest="40"
-                    WidthRequest="40"
-                    Margin="30,0,0,0">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="190"/>
-                </Border.StrokeShape>
-                <Image/>
-            </Border>
-            <Label Text="com.name"
-                   VerticalTextAlignment="Center"
-                   Margin="30,0,0,0"/>
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              Grid.ColumnSpan="2"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              Background="#13406D">
 
-        </StackLayout>
-
-        <StackLayout Grid.Column="1"
-                     Grid.Row="0"
-                     Orientation="Horizontal"
-                     HorizontalOptions="Center">
             <SearchBar Placeholder="Поиск"
-                       PlaceholderColor="Black"
+                       PlaceholderColor="#ffffff"
+                       BackgroundColor="#3F6488"
+                       CancelButtonColor="#ffffff"
                        WidthRequest="400"
                        HeightRequest="40"
                        x:Name="Searcher"
+                       TextColor="#ffffff"
+                       HorizontalOptions="Center"
                        SearchButtonPressed="SearchByListViewType"
                        TextChanged="ClearSearchResults"/>
-            
-        </StackLayout>
-        <Button Grid.Column="1"
-                Grid.Row="0"
-                HorizontalOptions="End"
-                Text="profile" 
-                Clicked="OpenProfile"/>
+
+            <ImageButton Source="profile.png"
+                    Clicked="OpenProfile"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    WidthRequest="50"
+                    HeightRequest="50"/>
+
+        </Grid>
 
 
-        <StackLayout Grid.Column="0"
-                     Grid.Row="1">
-            <Button Text="Входящие"
-                    Clicked="LoadInputMail"
-                    Margin="0,5,0,0"/>
-            <Button Text="Исходящие"
-                    Clicked="LoadOutputMail"
-                    Margin="0,5,0,0"/>
-            <Border Stroke="Black"
-                    StrokeThickness="1.5"
-                    Margin="0,5,0,5"/>
-            <Button Text="Документы"
-                    Clicked="LoadDocuments"/>
-            <Button Text="Архив документов"
-                    Clicked="LoadArchiveDocuments"
-                    Margin="0,5,0,0"/>
-            <Button Text="Удаленные документы"
-                    Clicked="LoadDeletedDocuments"
-                    Margin="0,5,0,0"/>
-            <Border Stroke="Black"
-                    StrokeThickness="1.5"
-                    Margin="0,5,0,5"/>
-            <Button Text="Пользователи"
-                    Clicked="LoadUsers"
-                    Margin="0,5,0,0"/>
-        </StackLayout>
+        <Grid Grid.Column="0"
+              Background="#ECEDF0"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              Grid.Row="1">
+            <StackLayout VerticalOptions="Start">
+                <Button Text="Входящие"
+                        Clicked="LoadInputMail"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Исходящие"
+                        Clicked="LoadOutputMail"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Документы"
+                        Clicked="LoadDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Архив документов"
+                        Clicked="LoadArchiveDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Удаленные документы"
+                        Clicked="LoadDeletedDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Пользователи"
+                        Clicked="LoadUsers"
+                        Style="{StaticResource ListViewSideButtons}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         VerticalOptions="End" 
+                         Margin="10,0,0,10">
+                <Border Stroke="Gray"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="190"/>
+                    </Border.StrokeShape>
+                    <Image/>
+                </Border>
+                <Label Text="Айкрафт"
+                       VerticalTextAlignment="Center"
+                       Margin="30,0,0,0"/>
+            </StackLayout>
+        </Grid>
 
         <StackLayout Grid.Column="1"
-                     Grid.Row="1"
-                     Background="Yellow">
+                     Grid.Row="1">
             <ScrollView>
                 <ListView Loaded="LoadInputMail"
                           x:Name="Mail" >

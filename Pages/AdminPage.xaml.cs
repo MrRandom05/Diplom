@@ -859,7 +859,7 @@ namespace Diplom
                 var result = await FilePicker.Default.PickAsync();
                 if (result != null)
                 {
-                    if (db.Documents.Where(x => x.DocumentName == result.FileName).Any())
+                    if (db.Documents.Any() && db.Documents.Where(x => x.DocumentName == result.FileName).Any())
                     {
                         await DisplayAlert("Ошибка", "Файл с таким названием уже существует", "Ок");
                     }
@@ -1139,7 +1139,7 @@ namespace Diplom
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
                         }
-                        SetDocumentsDataTemplate();
+                        SetArcDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;
@@ -1151,7 +1151,7 @@ namespace Diplom
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
                         }
-                        SetDocumentsDataTemplate();
+                        SetDelDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;
@@ -1161,7 +1161,7 @@ namespace Diplom
                         List<User> res = users.Where(x => x.Login.ToLower().Contains(query)).ToList();
                         res.AddRange(db.Users.Where(x => x.FIO.ToLower().Contains(query)).ToList());
                         res.AddRange(db.Users.Where(x => x.UserRole.RoleName.ToLower().Contains(query)).ToList());
-                        SetDocumentsDataTemplate();
+                        SetUsersDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;

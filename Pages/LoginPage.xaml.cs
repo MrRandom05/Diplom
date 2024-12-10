@@ -24,7 +24,7 @@ namespace Diplom
                 else
                 {
                     using AppContext db = new();
-                    User? user = db.Users.Include("UserRole").First(x => x.Login == Logintxt.Text);
+                    User? user = db.Users.Include("UserRole").FirstOrDefault(x => x.Login == Logintxt.Text);
                     if (user is null) await DisplayAlert("Ошибка", "Пользователя с таким логином не существует", "Ок");
                     else if (user.Password != Passwordtxt.Text) await DisplayAlert("Ошибка", "Неверный логин или пароль", "Ок");
                     else if (user.Password == Passwordtxt.Text)

@@ -47,7 +47,7 @@ namespace Diplom
                     }
                     if (attachedFiles.Count() == 0)
                     {
-                        Attachedlbl.Text = "";
+                        Attachedlbl.Text = "Нет прикрепленных файлов";
                     }
                     else if (attachedFiles.Count() <= 1)
                     {
