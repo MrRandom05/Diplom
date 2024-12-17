@@ -25,7 +25,7 @@
             </ScrollView>
 
         <Label x:Name="Attachedlbl" Text="Прикрепленные документы:" WidthRequest="500" />
-        <ScrollView Orientation="Horizontal" WidthRequest="500" >
+        <ScrollView Orientation="Horizontal" WidthRequest="500" HeightRequest="100" >
             <CollectionView x:Name="AttachedFilesView" ItemsLayout="HorizontalList">
                 <CollectionView.ItemTemplate>
                 <DataTemplate>

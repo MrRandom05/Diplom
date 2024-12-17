@@ -37,6 +37,9 @@ namespace Diplom
                             case "руководитель":
                             await Navigation.PushAsync(new ManagerPage(user));
                             break;
+                            case "работник":
+                            await Navigation.PushAsync(new WorkerPage(user));
+                            break;
                         }
                     }
                 }

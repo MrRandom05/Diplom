@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diplom.WorkerPage">
+
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Добавить/Загрузить">
+            <MenuFlyoutItem Text="Загрузить документ" Clicked="LoadDoc" />
+            <MenuFlyoutItem Text="Новое письмо" Clicked="CreateMail" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="14*"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              Grid.ColumnSpan="2"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              Background="#13406D">
+
+            <SearchBar Placeholder="Поиск"
+                       PlaceholderColor="#ffffff"
+                       BackgroundColor="#3F6488"
+                       CancelButtonColor="#ffffff"
+                       WidthRequest="400"
+                       HeightRequest="40"
+                       x:Name="Searcher"
+                       TextColor="#ffffff"
+                       HorizontalOptions="Center"
+                       SearchButtonPressed="SearchByListViewType"
+                       TextChanged="ClearSearchResults"/>
+
+            <ImageButton Source="profile.png"
+                    Clicked="OpenProfile"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    WidthRequest="50"
+                    HeightRequest="50"/>
+
+        </Grid>
+
+
+        <Grid Grid.Column="0"
+              Background="#ECEDF0"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              Grid.Row="1">
+            <StackLayout VerticalOptions="Start">
+                <Button Text="Входящие"
+                        Clicked="LoadInputMail"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Исходящие"
+                        Clicked="LoadOutputMail"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Документы"
+                        Clicked="LoadDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         VerticalOptions="End" 
+                         Margin="10,0,0,10">
+                <Border Stroke="Gray"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="190"/>
+                    </Border.StrokeShape>
+                    <Image/>
+                </Border>
+                <Label Text="Айкрафт"
+                       VerticalTextAlignment="Center"
+                       Margin="30,0,0,0"/>
+            </StackLayout>
+        </Grid>
+
+        <StackLayout Grid.Column="1"
+                     Grid.Row="1">
+            <ScrollView>
+                <ListView Loaded="LoadInputMail"
+                          x:Name="Mail" >
+                </ListView>
+            </ScrollView>
+        </StackLayout>
+    </Grid>
+
+</ContentPage>

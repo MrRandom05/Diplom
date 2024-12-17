@@ -831,6 +831,10 @@ namespace Diplom
                     }
 
                 }
+                else
+                {
+                    await DisplayAlert("Ошибка", "Недостаточно прав для удаления. (Вы можете удалять только созданные вами документы)", "Ок");
+                }
                 
             }
             catch(Exception ex)
