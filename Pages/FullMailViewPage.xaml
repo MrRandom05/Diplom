@@ -3,32 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Diplom.FullMailViewPage">
 
-    <StackLayout HorizontalOptions="Center" >
-        <Label x:Name="Themetxt" Text="Тема: " WidthRequest="500" Margin="0,50,0,0" />
-        <Label x:Name="Gettertxt" Text="Кому: " Margin="0,10,0,0"/>
-        <Label x:Name="Sendertxt" Text="От: " Margin="0,10,0,0"/>
-        <Label Text="Текст: " Margin="0,10,0,0"/>
-        <ScrollView WidthRequest="500" HeightRequest="300">
-            <Editor x:Name="Texttxt" Placeholder="Текст..." PlaceholderColor="Black" IsReadOnly="True" />
-        </ScrollView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="9*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0" Background="{StaticResource TabColor}">
+            <Label Text="Cообщение" FontSize="Header" TextColor="#ffffff" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" />
+        </StackLayout>
+
+        <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="25">
+            <Entry x:Name="Themetxt" Text="Тема: " Style="{StaticResource BaseAppEntry}" Margin="0,10,0,0" IsReadOnly="True" />
+            
+                <Entry x:Name="Gettertxt" Text="Получатель: " Style="{StaticResource BaseAppEntry}" Margin="0,-10,0,0" IsReadOnly="True" />
+            
+                <Entry x:Name="Sendertxt" Text="Отправитель: " Style="{StaticResource BaseAppEntry}" Margin="0,-10,0,0" IsReadOnly="True" />
+
+            <ScrollView WidthRequest="500" HeightRequest="200">
+                <Editor x:Name="Texttxt" Placeholder="Текст..." PlaceholderColor="#ffffff" Background="{StaticResource BgAppColor}" IsReadOnly="True" TextColor="#ffffff" />
+            </ScrollView>
+
         <Label x:Name="Attachedlbl" Text="Прикрепленные документы:" WidthRequest="500" />
-        <ScrollView Orientation="Horizontal" WidthRequest="500" Margin="0,10,0,0">
+        <ScrollView Orientation="Horizontal" WidthRequest="500" >
             <CollectionView x:Name="AttachedFilesView" ItemsLayout="HorizontalList">
                 <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame WidthRequest="120" HeightRequest="150">
-                        <VerticalStackLayout>
+                        <VerticalStackLayout MaximumHeightRequest="120" MaximumWidthRequest="80" ToolTipProperties.Text="{Binding DocumentName}">
                             <Image WidthRequest="50" HeightRequest="50" Source="doc.png" />
                             <Label Text="{Binding DocumentName}" LineBreakMode="TailTruncation" />
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="DownloadAttachedFile" />
+                            </VerticalStackLayout.GestureRecognizers>
                         </VerticalStackLayout>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="DownloadAttachedFile" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
-    </StackLayout>
+        </StackLayout>
+    </Grid>
 
 </ContentPage>

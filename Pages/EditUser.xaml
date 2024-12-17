@@ -3,17 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Diplom.EditUser">
 
-    <StackLayout HorizontalOptions="Center">
-        <Label Text="Изменение пользователя" FontSize="Header" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,100" />
-        <Entry x:Name="Logintxt" WidthRequest="500" Placeholder="Логин" PlaceholderColor="Black" Margin="0,0,0,50" />
-        <Entry x:Name="Passwordtxt" WidthRequest="500" Placeholder="Пароль" PlaceholderColor="Black" Margin="0,0,0,50" IsPassword="True" />
-        <Entry x:Name="FIOtxt" WidthRequest="500" Placeholder="ФИО" PlaceholderColor="Black" Margin="0,0,0,50" />
-        <StackLayout>
-            <Label Text="Роль" WidthRequest="500" />
-            <Picker x:Name="RolePick" WidthRequest="500" Loaded="LoadRoles" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="9*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0" Background="{StaticResource TabColor}">
+            <Label Text="Изменение пользователя" FontSize="Header" TextColor="#ffffff" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" />
         </StackLayout>
 
+        <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="40" Margin="0,75,0,0">
+        <StackLayout>
+            <Label Text="Логин" WidthRequest="500" />
+            <Entry x:Name="Logintxt" Placeholder="Логин" Style="{StaticResource BaseAppEntry}" />
+        </StackLayout>
+        <StackLayout>
+            <Label Text="Пароль" WidthRequest="500" />
+            <Entry x:Name="Passwordtxt" Placeholder="Пароль" Style="{StaticResource BaseAppEntry}" IsPassword="True" />
+        </StackLayout>
+        <StackLayout>
+            <Label Text="ФИО" WidthRequest="500" />
+            <Entry x:Name="FIOtxt" Placeholder="ФИО" Style="{StaticResource BaseAppEntry}" />
+        </StackLayout>
+        <StackLayout>
+            <Label Text="Роль" WidthRequest="500" />
+            <Picker x:Name="RolePick" WidthRequest="500" Loaded="LoadRoles" Background="{StaticResource BgAppColor}" TextColor="#ffffff" />
+        </StackLayout>
         <Button WidthRequest="250" Text="Изменить" Clicked="Edit" Margin="0,50,0,0" />
     </StackLayout>
+    </Grid>
 
 </ContentPage>

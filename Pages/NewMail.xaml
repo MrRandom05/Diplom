@@ -19,7 +19,7 @@
                 <Label Text="Кому" />
                 <Picker x:Name="GetterPick" WidthRequest="500" Loaded="LoadGetters" Background="{StaticResource BgAppColor}" TextColor="#ffffff" />
             </VerticalStackLayout>
-            <ScrollView WidthRequest="500" HeightRequest="300">
+            <ScrollView WidthRequest="500" HeightRequest="300" >
                 <Editor x:Name="Texttxt" Placeholder="Текст..." PlaceholderColor="#ffffff" Background="{StaticResource BgAppColor}" TextColor="#ffffff" />
             </ScrollView>
             <Label x:Name="Attachedlbl" WidthRequest="500" Text="Нет прикрепленных файлов" />
