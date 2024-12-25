@@ -56,7 +56,7 @@
             <StackLayout VerticalOptions="Start">
                 <Button Text="Входящие"
                         Clicked="LoadInputMail"
-                        Style="{StaticResource ListViewSideButtons}"/>
+                        Style="{StaticResource ListViewSideButtons}" />
                 <Button Text="Исходящие"
                         Clicked="LoadOutputMail"
                         Style="{StaticResource ListViewSideButtons}"/>
@@ -69,6 +69,9 @@
                 <Button Text="Удаленные документы"
                         Clicked="LoadDeletedDocuments"
                         Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Избранное"
+                        Clicked="LoadFavourite"
+                        Style="{StaticResource ListViewSideButtons}"/>
                 <Button Text="Пользователи"
                         Clicked="LoadUsers"
                         Style="{StaticResource ListViewSideButtons}"/>
@@ -76,23 +79,17 @@
             <StackLayout Orientation="Horizontal"
                          VerticalOptions="End" 
                          Margin="10,0,0,10">
-                <Border Stroke="Gray"
-                        HeightRequest="40"
-                        WidthRequest="40">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="190"/>
-                    </Border.StrokeShape>
-                    <Image/>
-                </Border>
+                    <Image Source="no_text_logo.png" WidthRequest="70" HeightRequest="70"/>
                 <Label Text="Айкрафт"
                        VerticalTextAlignment="Center"
-                       Margin="30,0,0,0"/>
+                       FontSize="Medium"
+                       Margin="5,0,0,0"/>
             </StackLayout>
         </Grid>
 
         <StackLayout Grid.Column="1"
                      Grid.Row="1">
-            <ScrollView>
+            <ScrollView HeightRequest="600">
                 <ListView Loaded="LoadInputMail"
                           x:Name="Mail" >
                 </ListView>

@@ -39,7 +39,7 @@ namespace Diplom
         {
             try
             {
-                var document = (sender as Frame).BindingContext as Document;
+                var document = (sender as VerticalStackLayout).BindingContext as Document;
                 using AppContext db = new();
                 var file = db.Documents.First(x => x.DocumentId == document.DocumentId);
                 if (file != null)

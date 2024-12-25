@@ -95,8 +95,7 @@ namespace Diplom
                             {
                                 var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
                                 var creator = db.Users.Include("UserRole").First(x => x.UserId == curUser.UserId);
-                                var priv = getter.UserRole;
-                                var doc = Document.Of(a.FileName, File.ReadAllBytes(a.FullPath), status, creator, priv);
+                                var doc = Document.Of(a.FileName, File.ReadAllBytes(a.FullPath), status, creator);
                                 db.Documents.Add(doc);
                                 db.SaveChanges();
                                 var added = db.Documents.First(x => x.DocumentName == a.FileName);

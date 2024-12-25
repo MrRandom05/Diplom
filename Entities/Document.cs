@@ -14,12 +14,18 @@ namespace Diplom.Entities
         public byte[] DocumentData { get; set; }
         public DocumentStatus documentStatus { get; set; }
         public User Creator { get; set; }
-        public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
-
-        public static Document Of(string name, byte[] data, DocumentStatus status, User creator, Role privatelvl)
+        public bool IsFavourite(User user)
         {
-            return new Document() {DocumentName = name, DocumentData = data, documentStatus = status, Creator = creator, PrivateLevel = privatelvl, CreationDate = DateTime.Now};
+            using AppContext db = new();
+            var res = db.FavoriteDocuments.Where(x => x.FavoritedDocument.DocumentId == this.DocumentId && user.UserId == x.FavoritedUser.UserId);
+            if (res.Any()) return true;
+            return false;
+        }
+
+        public static Document Of(string name, byte[] data, DocumentStatus status, User creator)
+        {
+            return new Document() {DocumentName = name, DocumentData = data, documentStatus = status, Creator = creator, CreationDate = DateTime.Now};
         }
 
         public override void CastFromDocument(Document doc)

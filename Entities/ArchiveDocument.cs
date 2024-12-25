@@ -13,7 +13,6 @@ namespace Diplom.Entities
         public byte[] ArchiveDocumentData { get; set; }
         public DocumentStatus documentStatus { get; set; }
         public User Creator { get; set; }
-        public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
 
         public override void CastFromDocument(Document doc)
@@ -22,7 +21,6 @@ namespace Diplom.Entities
             ArchiveDocumentData = doc.DocumentData;
             documentStatus = doc.documentStatus;
             Creator = doc.Creator;
-            PrivateLevel = doc.PrivateLevel;
             CreationDate = DateTime.Now;
         }
 

@@ -13,12 +13,11 @@ namespace Diplom.Entities
         public byte[] DeletedDocumentData { get; set; }
         public DocumentStatus documentStatus { get; set; }
         public User Creator { get; set; }
-        public Role PrivateLevel { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public static DeletedDocument Of(string name, byte[] data, DocumentStatus status, User creator, Role privatelvl)
+        public static DeletedDocument Of(string name, byte[] data, DocumentStatus status, User creator)
         {
-            return new DeletedDocument() { DeletedDocumentName = name, DeletedDocumentData = data, documentStatus = status, Creator = creator, PrivateLevel = privatelvl, CreationDate = DateTime.Now};
+            return new DeletedDocument() { DeletedDocumentName = name, DeletedDocumentData = data, documentStatus = status, Creator = creator, CreationDate = DateTime.Now};
         }
     
         public override void CastFromDocument(Document doc)
@@ -27,13 +26,12 @@ namespace Diplom.Entities
             DeletedDocumentData = doc.DocumentData;
             documentStatus = doc.documentStatus;
             Creator = doc.Creator;
-            PrivateLevel = doc.PrivateLevel;
             CreationDate = DateTime.Now;
         }
 
         public override Document CastToDocument()
         {
-            return Document.Of(DeletedDocumentName, DeletedDocumentData, documentStatus, Creator, PrivateLevel);
+            return Document.Of(DeletedDocumentName, DeletedDocumentData, documentStatus, Creator);
         }
     }
 }
