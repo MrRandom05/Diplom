@@ -814,7 +814,7 @@ namespace Diplom
                 {
                     if (await DisplayAlert("Подтвердить действие", "Вы хотите удалить документ?", "Да", "Нет"))
                     {
-                        var del = db.Documents.Include("Creator").Include("documentStatus").Include("PrivateLevel").First(x => x.DocumentId == context.DocumentId);
+                        var del = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
                         var deletedStatus = db.DocumentStatuses.First(x => x.DocumentStatusName == "удален");
                         var deldoc = new DeletedDocument();
                         deldoc.CastFromDocument(del);

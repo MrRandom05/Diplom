@@ -1253,7 +1253,7 @@ namespace Diplom
                 {
                     if (await DisplayAlert("Подтвердить действие", "Вы хотите удалить документ?", "Да", "Нет"))
                     {
-                        var del = db.Documents.Include("Creator").Include("documentStatus").Include("PrivateLevel").First(x => x.DocumentId == context.DocumentId);
+                        var del = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
                         var deletedStatus = db.DocumentStatuses.First(x => x.DocumentStatusName == "удален");
                         var deldoc = new DeletedDocument();
                         deldoc.CastFromDocument(del);
@@ -1281,14 +1281,14 @@ namespace Diplom
                 var context = (sender as MenuFlyoutItem).BindingContext as DeletedDocument;
                 if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
                 {
-                    var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").Include("PrivateLevel").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
+                    var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
                     var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "восстановлен");
                     var doc = deldoc.CastToDocument();
                     doc.documentStatus = status;
                     db.DeletedDocuments.Remove(deldoc);
                     db.Documents.Add(doc);
                     db.SaveChanges();
-                    GetDocs();
+                    GetDelDocs();
                 }
                 
             }
@@ -1308,7 +1308,7 @@ namespace Diplom
                 {
                     if (await DisplayAlert("Подтвердить действие", "Вы хотите безвозвратно удалить документ?", "Да", "Нет"))
                     {
-                        var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").Include("PrivateLevel").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
+                        var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
                         db.DeletedDocuments.Remove(deldoc);
                         db.SaveChanges();
                         GetDelDocs();
@@ -1331,7 +1331,7 @@ namespace Diplom
                 var context = (sender as MenuFlyoutItem).BindingContext as Document;
                 if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
                 {
-                    var doc = db.Documents.Include("Creator").Include("documentStatus").Include("PrivateLevel").First(x => x.DocumentId == context.DocumentId);
+                    var doc = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
                     var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в архиве");
                     ArchiveDocument arc = new();
                     arc.CastFromDocument(doc);
