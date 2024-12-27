@@ -968,7 +968,7 @@ namespace Diplom
                 SetFavoriteDataTemplate();
                 Mail.ItemsSource = favorites;
                 curListViewType = ListType.Favorite;
-                
+                ChangeLVRowCount(favorites.Count());
             }
             catch (Exception ex)
             {
@@ -987,6 +987,7 @@ namespace Diplom
                     SetInputMailDataTemplate();
                     Mail.ItemsSource = mail;
                     curListViewType = ListType.Input;
+                    ChangeLVRowCount(mail.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1004,6 +1005,7 @@ namespace Diplom
                     SetOutputMailDataTemplate();
                     Mail.ItemsSource = mail;
                     curListViewType = ListType.Output;
+                    ChangeLVRowCount(mail.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1021,6 +1023,7 @@ namespace Diplom
                     SetDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
                     curListViewType = ListType.Documents;
+                    ChangeLVRowCount(docs.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1038,6 +1041,7 @@ namespace Diplom
                     SetDelDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
                     curListViewType = ListType.DeletedDocuments;
+                    ChangeLVRowCount(docs.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1055,6 +1059,7 @@ namespace Diplom
                     SetArcDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
                     curListViewType = ListType.ArchiveDocuments;
+                    ChangeLVRowCount(docs.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1072,6 +1077,7 @@ namespace Diplom
                     SetUsersDataTemplate();
                     Mail.ItemsSource = users;
                     curListViewType = ListType.Users;
+                    ChangeLVRowCount(users.Count());
                 }
             }
             catch (Exception ex)
@@ -1087,6 +1093,7 @@ namespace Diplom
             try
             {
                 GetFav();
+                ChangeLVHeader("Избранное");
             }
             catch (Exception ex)
             {
@@ -1096,26 +1103,31 @@ namespace Diplom
         private void LoadInputMail(object sender, EventArgs e)
         {
             GetInputMail();
+            ChangeLVHeader("Входящие");
         }
 
         private void LoadOutputMail(object sender, EventArgs e)
         {
             GetOutputMail();
+            ChangeLVHeader("Исходящие");
         }
 
         private void LoadDocuments(object sender, EventArgs e)
         {
             GetDocs();
+            ChangeLVHeader("Документы");
         }
 
         private void LoadArchiveDocuments(object sender, EventArgs e)
         {
             GetArcDocs();
+            ChangeLVHeader("Архив");
         }
 
         private void LoadDeletedDocuments(object sender, EventArgs e)
         {
             GetDelDocs();
+            ChangeLVHeader("Удаленные документы");
         }
 
         private async void LoadDoc(object sender, EventArgs e)
@@ -1172,6 +1184,7 @@ namespace Diplom
         private void LoadUsers(object sender, EventArgs e)
         {
             GetUsers();
+            ChangeLVHeader("Пользователи");
         }
         
         private async void CreateMail(object sender, EventArgs e)
@@ -1613,6 +1626,16 @@ namespace Diplom
             }
         }
 
+        private void ChangeLVHeader(string name)
+        {
+            LVTitle.Text = name;
+        }
+
+        private void ChangeLVRowCount(int count)
+        {
+            LVRowsCount.Text = $"Записей: {count}";
+        }
+        
         #endregion
     }
 }

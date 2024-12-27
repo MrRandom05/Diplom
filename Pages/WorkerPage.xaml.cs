@@ -22,6 +22,7 @@ namespace Diplom
             try
             {
                 GetFav();
+                ChangeLVHeader("Избранное");
             }
             catch (Exception ex)
             {
@@ -32,16 +33,19 @@ namespace Diplom
         private void LoadInputMail(object sender, EventArgs e)
         {
             GetInputMail();
+            ChangeLVHeader("Входящие");
         }
 
         private void LoadOutputMail(object sender, EventArgs e)
         {
             GetOutputMail();
+            ChangeLVHeader("Исходящие");
         }
 
         private void LoadDocuments(object sender, EventArgs e)
         {
             GetDocs();
+            ChangeLVHeader("Документы");
         }
 
         private async void LoadDoc(object sender, EventArgs e)
@@ -142,7 +146,7 @@ namespace Diplom
                 SetFavoriteDataTemplate();
                 Mail.ItemsSource = favorites;
                 curListViewType = ListType.Favorite;
-                
+                ChangeLVRowCount(favorites.Count());
             }
             catch (Exception ex)
             {
@@ -162,6 +166,7 @@ namespace Diplom
                     SetInputMailDataTemplate();
                     Mail.ItemsSource = mail;
                     curListViewType = ListType.Input;
+                    ChangeLVRowCount(mail.Count());
                 }
             }
             catch (Exception ex) {}
@@ -179,6 +184,7 @@ namespace Diplom
                     SetOutputMailDataTemplate();
                     Mail.ItemsSource = mail;
                     curListViewType = ListType.Output;
+                    ChangeLVRowCount(mail.Count());
                 }
             }
             catch (Exception ex) {}
@@ -196,6 +202,7 @@ namespace Diplom
                     SetDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
                     curListViewType = ListType.Documents;
+                    ChangeLVRowCount(docs.Count());
                 }
             }
             catch (Exception ex) {}
@@ -1060,7 +1067,17 @@ namespace Diplom
                     break;
             }
         }
+        
+        private void ChangeLVHeader(string name)
+        {
+            LVTitle.Text = name;
+        }
 
+        private void ChangeLVRowCount(int count)
+        {
+            LVRowsCount.Text = $"Записей: {count}";
+        }
+        
         #endregion
     }
 }

@@ -87,7 +87,11 @@
 
         <StackLayout Grid.Column="1"
                      Grid.Row="1">
-            <ScrollView>
+                      <StackLayout Orientation="Horizontal" HeightRequest="50">
+                <Label x:Name="LVTitle" Text="Название" VerticalTextAlignment="Center" Margin="20,0,0,0" FontSize="Large" />
+                <Label x:Name="LVRowsCount" Text="Записей: 12" VerticalTextAlignment="Center" Margin ="10,10,0,0" FontSize="Small" />
+            </StackLayout>
+            <ScrollView HeightRequest="550">
                 <ListView Loaded="LoadInputMail"
                           x:Name="Mail" >
                 </ListView>
