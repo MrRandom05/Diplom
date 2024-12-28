@@ -364,9 +364,9 @@ namespace Diplom
                 Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label favName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label favType = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label favName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label favType = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="checked_star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
                 TapGestureRecognizer starTap = new();
                 starTap.Tapped += (s, e) => 
@@ -399,9 +399,9 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label sender = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
-                Label title = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
-                Label sendDate = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label sender = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label title = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label sendDate = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
                 fav.Loaded += (s, e) => 
                 {
@@ -543,9 +543,9 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label fio = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
-                Label theme = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label fio = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label theme = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
                 fav.Loaded += (s, e) => 
                 {
@@ -687,9 +687,9 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
                 fav.Loaded += (s, e) => 
                 {
@@ -835,9 +835,9 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 docName.SetBinding(Label.TextProperty, "DeletedDocumentName");
                 docStat.SetBinding(Label.TextProperty, "Creator.FIO");
                 date.SetBinding(Label.TextProperty, "CreationDate");
@@ -949,9 +949,9 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.NoWrap, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 docName.SetBinding(Label.TextProperty, "ArchiveDocumentName");
                 docStat.SetBinding(Label.TextProperty, "Creator.FIO");
                 date.SetBinding(Label.TextProperty, "CreationDate");
