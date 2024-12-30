@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
+
 
 namespace Diplom
 {
@@ -9,6 +11,7 @@ namespace Diplom
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,6 +21,9 @@ namespace Diplom
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+
+
 
             return builder.Build();
         }

@@ -75,6 +75,7 @@ namespace Diplom
                 sender.SetBinding(Label.TextProperty, "Sender.FIO");
                 title.SetBinding(Label.TextProperty, "UserEmailTitle");
                 sendDate.SetBinding(Label.TextProperty, "SendDate");
+                var border = new Border();
                 var stack = new HorizontalStackLayout { Children = {fav, sender, title, sendDate} };
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += (s, e) => 
@@ -83,7 +84,7 @@ namespace Diplom
                     Navigation.PushAsync(new FullMailViewPage(context));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {stack, border}};
                 return cell;
             });
         }
@@ -359,11 +360,13 @@ namespace Diplom
                         RemoveFromFav(context);
                     }
                 };
+                var cb = new Picker() {FontSize = 16, WidthRequest = 200, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center};
+                cb.ItemsSource = new List<string>() {"1", "2"};
                 fav.GestureRecognizers.Add(starTap);
                 docName.SetBinding(Label.TextProperty, "DocumentName");
                 docStat.SetBinding(Label.TextProperty, "documentStatus.DocumentStatusName");
                 date.SetBinding(Label.TextProperty, "CreationDate");
-                var stack = new HorizontalStackLayout { Children = {fav, docName, docStat, date} };
+                var stack = new HorizontalStackLayout { Children = {fav, docName, cb, date} };
                 MenuFlyout menuElements = new MenuFlyout();
                 MenuFlyoutItem download = new MenuFlyoutItem() { Text = "Скачать" };
                 MenuFlyoutItem delete = new MenuFlyoutItem() { Text = "Удалить" };

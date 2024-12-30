@@ -1,29 +1,79 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Diplom.Profile">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="9*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
 
-        <StackLayout Grid.Row="0" Background="{StaticResource TabColor}">
+        <StackLayout Grid.Row="0" Background="{StaticResource TabColor}" Grid.ColumnSpan="2">
             <Label Text="Профиль" FontSize="Header" TextColor="#ffffff" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" />
         </StackLayout>
 
-        <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="40" Margin="0,75,0,0">
-        <StackLayout>
-            <Label Text="Логин" WidthRequest="500" />
-            <Entry x:Name="Logintxt" Placeholder="Логин" Style="{StaticResource BaseAppEntry}" />
+        <StackLayout Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <Border Stroke="#ffffff" HeightRequest="250" WidthRequest="250" Margin="-10,10,10,10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="190" />
+            </Border.StrokeShape>
+            <Image x:Name="ProfilePhoto" Source="who.png" Aspect="AspectFill"
+                HeightRequest="250" WidthRequest="250" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="LoadPhoto" />
+                </Image.GestureRecognizers>
+                </Image>
+        </Border>
+
+        <VerticalStackLayout WidthRequest="300">
+            <Entry x:Name="FIOtxt" Style="{StaticResource BaseAppEntry}" WidthRequest="300" Text="ФИО" IsReadOnly="True" />
+            <Border Style="{StaticResource EntryBorder}" />
+        </VerticalStackLayout>
+        <VerticalStackLayout WidthRequest="300">
+            <Entry x:Name="Positiontxt" Style="{StaticResource BaseAppEntry}" WidthRequest="300" Text="Должность" IsReadOnly="True" />
+            <Border Style="{StaticResource EntryBorder}" />
+        </VerticalStackLayout>
+        <VerticalStackLayout WidthRequest="300">
+            <Entry x:Name="Departmenttxt" Style="{StaticResource BaseAppEntry}" WidthRequest="300" Text="Отдел" IsReadOnly="True" />
+            <Border Style="{StaticResource EntryBorder}" />
+        </VerticalStackLayout>
         </StackLayout>
-        <StackLayout>
-            <Label Text="Пароль" WidthRequest="500" />
-            <Entry x:Name="Passwordtxt" Placeholder="Новый пароль" Style="{StaticResource BaseAppEntry}" IsPassword="True" />
+
+
+        <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="40" Margin="0,30,0,0" Grid.Column="1">
+        <StackLayout WidthRequest="500">
+            <HorizontalStackLayout>
+                <Label VerticalTextAlignment="Center" FontSize="20" Text="Логин:" TextColor="{StaticResource BgAppColor}" Margin="0,-5,0,0" />
+                <Entry x:Name="Logintxt" Style="{StaticResource BaseAppEntry}" WidthRequest="400" />
+            </HorizontalStackLayout>
+            <Border Style="{StaticResource EntryBorder}" />
         </StackLayout>
-        <StackLayout>
-            <Label Text="ФИО" WidthRequest="500" />
-            <Entry x:Name="FIOtxt" Placeholder="ФИО" Style="{StaticResource BaseAppEntry}" />
+        <StackLayout WidthRequest="500">
+            <HorizontalStackLayout>
+                <Label VerticalTextAlignment="Center" FontSize="20" Text="Телефон:" TextColor="{StaticResource BgAppColor}" Margin="0,-5,0,0" />
+                <Entry x:Name="Telephonetxt" Style="{StaticResource BaseAppEntry}" WidthRequest="400" Keyboard="Numeric" >
+                    <Entry.Behaviors>
+                        <toolkit:MaskedBehavior Mask="+0 (000) 000-00-00" UnmaskedCharacter="0" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+            <Border Style="{StaticResource EntryBorder}" />
+        </StackLayout>
+        <StackLayout WidthRequest="500">
+            <HorizontalStackLayout>
+                <Label VerticalTextAlignment="Center" FontSize="20" Text="Почта:" TextColor="{StaticResource BgAppColor}" Margin="0,-5,0,0" />
+                <Entry x:Name="Emailtxt" Style="{StaticResource BaseAppEntry}" WidthRequest="400" />
+            </HorizontalStackLayout>
+            <Border Style="{StaticResource EntryBorder}" />
+        </StackLayout>
+        <StackLayout WidthRequest="500">
+            <Entry x:Name="Passwordtxt" Style="{StaticResource BaseAppEntry}" Placeholder="Новый пароль" IsPassword="True" />
+            <Border Style="{StaticResource EntryBorder}" />
         </StackLayout>
         <Button WidthRequest="250" Text="Сохранить" Clicked="EditProfile" Margin="0,50,0,0" />
     </StackLayout>

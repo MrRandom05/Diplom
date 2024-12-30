@@ -14,8 +14,14 @@
                 <Label Text="Вход" FontSize="Header" TextColor="#ffffff" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" />
             </StackLayout>
             <StackLayout Grid.Row="1" VerticalOptions="Center" Spacing="75">
-                <Entry x:Name="Logintxt" Placeholder="Логин" Style="{StaticResource BaseAppEntry}"  />
-                <Entry x:Name="Passwordtxt" Placeholder="Пароль" Style="{StaticResource BaseAppEntry}" IsPassword="True" />
+                <VerticalStackLayout WidthRequest="500">
+                    <Entry x:Name="Logintxt" Placeholder="Логин" Style="{StaticResource BaseAppEntry}"  />
+                    <Border Style="{StaticResource EntryBorder}" />
+                </VerticalStackLayout>
+                <VerticalStackLayout WidthRequest="500">
+                    <Entry x:Name="Passwordtxt" Placeholder="Пароль" Style="{StaticResource BaseAppEntry}" IsPassword="True" />
+                    <Border Style="{StaticResource EntryBorder}" />
+                </VerticalStackLayout>
                 <Button WidthRequest="200" Text="Войти" Clicked="TryLogin" />
             </StackLayout>
         </Grid>

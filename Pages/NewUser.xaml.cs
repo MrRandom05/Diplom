@@ -48,12 +48,12 @@ namespace Diplom
                     }
                     else
                     {
-                        var roletxt = RolePick.SelectedItem as string;
-                        var role = db.Roles.First(x => x.RoleName == roletxt);
-                        var status = db.UsersStatuses.First();
-                        User newUser = User.Of(role, Logintxt.Text, Passwordtxt.Text, FIOtxt.Text, status);
-                        db.Users.Add(newUser);
-                        db.SaveChanges();
+                        // var roletxt = RolePick.SelectedItem as string;
+                        // var role = db.Roles.First(x => x.RoleName == roletxt);
+                        // var status = db.UsersStatuses.First();
+                        // User newUser = User.Of(role, Logintxt.Text, Passwordtxt.Text, FIOtxt.Text, status, "", "", null, );
+                        // db.Users.Add(newUser);
+                        // db.SaveChanges();
                         await DisplayAlert("Успех", "Пользователь добавлен", "Ок");
                         await Navigation.PopAsync();
                     }

@@ -24,8 +24,10 @@ namespace Diplom
         public DbSet<DocumentStatus> DocumentStatuses { get; set; } = null!;
         public DbSet<FavoriteMail> FavoriteMails { get; set; } = null!;
         public DbSet<UserStatus> UsersStatuses { get; set; } = null!;
-        public DbSet<Document> Documents { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<UserMail> UsersMails { get; set; } = null!;
+        public DbSet<Position> Positions { get; set; } = null!;
+        public DbSet<Document> Documents { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
 
@@ -39,15 +41,29 @@ namespace Diplom
             Roles.Add(Role.Of("админ"));
             Roles.Add(Role.Of("руководитель"));
             Roles.Add(Role.Of("работник"));
-            UsersStatuses.Add(UserStatus.Of("работает"));
-            UsersStatuses.Add(UserStatus.Of("в отпуске"));
-            UsersStatuses.Add(UserStatus.Of("больничный"));
+            Positions.Add(Position.Of("Администратор"));
+            Positions.Add(Position.Of("Старший менеджер"));
+            Positions.Add(Position.Of("Специалист"));
+            Positions.Add(Position.Of("Младший менеджер"));
+            Positions.Add(Position.Of("Рядовой сотрудник"));
+            Departments.Add(Department.Of("Административный отдел"));
+            Departments.Add(Department.Of("Производственный отдел"));
+            Departments.Add(Department.Of("Логистический отдел"));
+            Departments.Add(Department.Of("Технический отдел"));
+            Departments.Add(Department.Of("IT отдел"));
+            UsersStatuses.Add(UserStatus.Of("активен"));
+            UsersStatuses.Add(UserStatus.Of("отстранен"));
+            UsersStatuses.Add(UserStatus.Of("удален"));
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "создан"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в работе"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "удален"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "восстановлен"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в архиве"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "подписан"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "на подписании"});
+            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "выполнен"});
             SaveChanges();
-            Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First()));
+            Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First(), "88005553535", "wwaaa@ya.com", null, Departments.First(), Positions.First()));
             SaveChanges();
         }
     }
