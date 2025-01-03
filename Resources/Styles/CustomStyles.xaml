@@ -41,4 +41,30 @@
         <Setter Property="Stroke" Value="{StaticResource BgAppColor}" />
         <Setter Property="Margin" Value="0,-5,0,0" />
     </Style>
+
+    <Style TargetType="ImageButton" x:Key="TabButton">
+        <Setter Property="WidthRequest" Value="50" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                    Value="1"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                    Value="0.8"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver"/>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -42,6 +42,8 @@ namespace Diplom
                         }
                         else
                         {
+                            File.Delete(path);
+                            File.WriteAllBytes(path, user.Photo);
                             ProfilePhoto.Source = path;
                         }
                     }

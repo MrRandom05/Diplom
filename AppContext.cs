@@ -20,7 +20,7 @@ namespace Diplom
 
         public DbSet<FavoriteDocument> FavoriteDocuments { get; set; } = null!;
         public DbSet<ArchiveDocument> ArchiveDocuments { get; set; } = null!;
-        public DbSet<DeletedDocument> DeletedDocuments { get; set; } = null!;
+        public DbSet<DeletedDocument> DeletedDocuments { get; set; } = null!; // убрать
         public DbSet<DocumentStatus> DocumentStatuses { get; set; } = null!;
         public DbSet<FavoriteMail> FavoriteMails { get; set; } = null!;
         public DbSet<UserStatus> UsersStatuses { get; set; } = null!;

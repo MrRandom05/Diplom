@@ -23,7 +23,14 @@ namespace Diplom
 #endif
 
 
-
+            Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping(nameof(Picker), (handler, view) =>
+    {
+#if WINDOWS
+        var combobox = handler.PlatformView;
+        combobox.BorderBrush = null;
+        combobox.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+#endif
+    });
 
             return builder.Build();
         }

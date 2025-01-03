@@ -16,6 +16,7 @@ namespace Diplom.Entities
         public string UserEmailBody { get; set; }
         public DateTime SendDate { get; set; }
         public List<Document> AttachedDocuments { get; set; } 
+        public bool IsWasOpened { get; set; } = false;
         public bool IsFavourite(User user)
         {
             using AppContext db = new();

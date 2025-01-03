@@ -75,7 +75,6 @@ namespace Diplom
                 sender.SetBinding(Label.TextProperty, "Sender.FIO");
                 title.SetBinding(Label.TextProperty, "UserEmailTitle");
                 sendDate.SetBinding(Label.TextProperty, "SendDate");
-                var border = new Border();
                 var stack = new HorizontalStackLayout { Children = {fav, sender, title, sendDate} };
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += (s, e) => 
@@ -84,7 +83,7 @@ namespace Diplom
                     Navigation.PushAsync(new FullMailViewPage(context));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = new VerticalStackLayout() {Children = {stack, border}};
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -228,7 +227,7 @@ namespace Diplom
                     Navigation.PushAsync(new FullMailViewPage(context));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -361,11 +360,24 @@ namespace Diplom
                     }
                 };
                 var cb = new Picker() {FontSize = 16, WidthRequest = 200, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center};
-                cb.ItemsSource = new List<string>() {"1", "2"};
+                using AppContext db = new();
+                var statuses = db.DocumentStatuses.ToList().Select(z => z.DocumentStatusName).ToList();
+                cb.ItemsSource = statuses;
                 fav.GestureRecognizers.Add(starTap);
+                cb.SetBinding(Picker.SelectedItemProperty, "documentStatus.DocumentStatusName");
                 docName.SetBinding(Label.TextProperty, "DocumentName");
                 docStat.SetBinding(Label.TextProperty, "documentStatus.DocumentStatusName");
                 date.SetBinding(Label.TextProperty, "CreationDate");
+                cb.SelectedIndexChanged += (s, e) => 
+                {
+                    var source = (s as Picker).SelectedItem as string;
+                    var context = (s as Picker).BindingContext as Document;
+                    using AppContext db = new();
+                    var doc = db.Documents.Include("documentStatus").First(z => z.DocumentId == context.DocumentId);
+                    var status = db.DocumentStatuses.First(z => z.DocumentStatusName == source);
+                    doc.documentStatus = status;
+                    db.SaveChanges();
+                };
                 var stack = new HorizontalStackLayout { Children = {fav, docName, cb, date} };
                 MenuFlyout menuElements = new MenuFlyout();
                 MenuFlyoutItem download = new MenuFlyoutItem() { Text = "Скачать" };
@@ -378,7 +390,7 @@ namespace Diplom
                 menuElements.Add(delete);
                 menuElements.Add(archive);
                 FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -492,7 +504,7 @@ namespace Diplom
                 menuElements.Add(reset);
                 menuElements.Add(delete);
                 FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -603,7 +615,7 @@ namespace Diplom
                 download.Clicked += DownloadDoc;
                 menuElements.Add(download);
                 FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -805,7 +817,7 @@ namespace Diplom
                     await Navigation.PushAsync(new EditUser(user));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -933,7 +945,7 @@ namespace Diplom
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += FavoriteInteract;
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
             }
