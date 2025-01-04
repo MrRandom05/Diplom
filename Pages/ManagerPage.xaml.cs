@@ -167,7 +167,26 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
- 
+        private void GetCompletedDocs()
+        {
+            try
+            {
+                using AppContext db = new();
+                var docs = db.Documents.Include("Creator").Include("documentStatus")
+                .Where(z => z.documentStatus.DocumentStatusName.ToLower() == "выполнен").ToList();
+                if (docs != null)
+                {
+                    SetDocumentsHeader();
+                    SetDocumentsDataTemplate();
+                    Mail.ItemsSource = docs;
+                    curListViewType = ListType.CompletedDocuments;
+                    ChangeLVRowCount(docs.Count());
+                }
+            }
+            catch (Exception ex) {}
+        }
+
+
         private void GetInputMail()
         {
             try
@@ -227,11 +246,11 @@ namespace Diplom
             try
             {
                 using AppContext db = new();
-                var docs = db.DeletedDocuments.Include("Creator").Include("documentStatus").ToList();
+                var docs = db.Documents.Include("Creator").Include("documentStatus").Where(z => z.documentStatus.DocumentStatusName == "удален").ToList();
                 if (docs != null)
                 {
-                    SetDelDocumentsHeader();
-                    SetDelDocumentsDataTemplate();
+                    SetDocumentsHeader();
+                    SetDocumentsDataTemplate();
                     Mail.ItemsSource = docs;
                     curListViewType = ListType.DeletedDocuments;
                     ChangeLVRowCount(docs.Count());
@@ -260,7 +279,17 @@ namespace Diplom
         #endregion
     
         #region List view styles
-
+        private async void Exit(object sender, EventArgs e)
+        {
+            try
+            {
+                await Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
         private async void SetFavoriteHeader()
         {
             try
@@ -399,10 +428,24 @@ namespace Diplom
             Mail.ItemTemplate = new DataTemplate(() =>
             {
                 ViewCell cell = new ViewCell();
-                Label sender = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
+                Label sender = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(10, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
                 Label title = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
                 Label sendDate = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
+                Image read = new Image() { WidthRequest = 30, HeightRequest=30, Margin=new Thickness(10,0,0,0)};
+                read.Loaded += (s, e) => 
+                {
+                    var img = s as Image;
+                    var context = img.BindingContext as UserMail;
+                    if (context.IsWasOpened)
+                    {
+                        img.Source = "checked.png";
+                    }
+                    else
+                    {
+                        img.Source = null;
+                    }
+                };
                 fav.Loaded += (s, e) => 
                 {
                     var star = s as Image;
@@ -436,15 +479,19 @@ namespace Diplom
                 sender.SetBinding(Label.TextProperty, "Sender.FIO");
                 title.SetBinding(Label.TextProperty, "UserEmailTitle");
                 sendDate.SetBinding(Label.TextProperty, "SendDate");
-                var stack = new HorizontalStackLayout { Children = {fav, sender, title, sendDate} };
+                var stack = new HorizontalStackLayout { Children = {fav, read, sender, title, sendDate} };
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += (s, e) => 
                 {
                     var context = (s as HorizontalStackLayout).BindingContext as UserMail;
-                    Navigation.PushAsync(new FullMailViewPage(context));
+                    using AppContext db = new();
+                    var mail = db.UsersMails.Include("Getter").Include("Sender").Include("AttachedDocuments").First(z => z.UserMailId == context.UserMailId);
+                    mail.IsWasOpened = true;
+                    db.SaveChanges();
+                    Navigation.PushAsync(new FullMailViewPage(mail));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -452,7 +499,7 @@ namespace Diplom
         private void SetInputMailHeader()
         {
             HorizontalStackLayout stack = new();
-            var sender = new Label {FontSize = 16, WidthRequest = 200, Text="От", Margin = new Thickness(90,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var sender = new Label {FontSize = 16, WidthRequest = 200, Text="От", Margin = new Thickness(110,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var title = new Label {FontSize = 16, WidthRequest = 200, Text="Тема", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата отправки", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var tap = new TapGestureRecognizer();
@@ -588,7 +635,7 @@ namespace Diplom
                     Navigation.PushAsync(new FullMailViewPage(context));
                 };
                 stack.GestureRecognizers.Add(tap);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -690,6 +737,7 @@ namespace Diplom
                 Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label responsible = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Image fav = new Image() {Source="star.png", WidthRequest = 30, HeightRequest = 30, Margin = new Thickness(30,0,0,0)};
                 fav.Loaded += (s, e) => 
                 {
@@ -720,23 +768,105 @@ namespace Diplom
                         RemoveFromFav(context);
                     }
                 };
+                var cb = new Picker() {FontSize = 16, WidthRequest = 200, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center};
+                using AppContext db = new();
+                var statuses = db.DocumentStatuses.ToList().Select(z => z.DocumentStatusName).ToList();
+                cb.ItemsSource = statuses;
                 fav.GestureRecognizers.Add(starTap);
+                cb.SetBinding(Picker.SelectedItemProperty, "documentStatus.DocumentStatusName");
                 docName.SetBinding(Label.TextProperty, "DocumentName");
+                responsible.SetBinding(Label.TextProperty, "GetResponsibleUserString");
                 docStat.SetBinding(Label.TextProperty, "documentStatus.DocumentStatusName");
                 date.SetBinding(Label.TextProperty, "CreationDate");
-                var stack = new HorizontalStackLayout { Children = {fav, docName, docStat, date} };
+                cb.SelectedIndexChanged += async (s, e) => 
+                {
+                    var source = (s as Picker).SelectedItem as string;
+                    var context = (s as Picker).BindingContext as Document;
+                    if (source != null)
+                    {
+                        using AppContext db = new();
+                        var doc = db.Documents.Include("Creator").Include("documentStatus").First(z => z.DocumentId == context.DocumentId);
+                        DocumentStatus? status;
+                        switch (source)
+                        {
+                            default:
+                                status = db.DocumentStatuses.First(z => z.DocumentStatusName == source);
+                                doc.documentStatus = status;
+                                db.SaveChanges();
+                                break;
+                            case "удален":
+                                if (doc.documentStatus.DocumentStatusName != source)
+                                {
+                                    if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
+                                    {
+                                        if (await DisplayAlert("Подтвердить действие", "Вы хотите удалить документ?", "Да", "Нет"))
+                                        {
+                                            status = db.DocumentStatuses.First(z => z.DocumentStatusName == source);
+                                            doc.documentStatus = status;
+                                            db.SaveChanges();
+                                        }
+                                        else
+                                        {
+                                            FillListByBaseData();
+                                        }
+                                    }
+                                }
+                                break;
+                            case "в работе":
+                                if (curUser.UserRole.RoleName == "руководитель" || curUser.UserRole.RoleName == "админ")
+                                {
+                                    status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
+                                    doc.documentStatus = status;
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    FillListByBaseData();
+                                    await DisplayAlert("Ошибка", "недостаточно прав", "Ок");
+                                }
+                                break;
+                            case "восстановлен":
+                                if (curUser.UserRole.RoleName != "админ")
+                                {
+                                    FillListByBaseData();
+                                    await DisplayAlert("Ошибка", "недостаточно прав", "Ок");
+                                }
+                                break;
+                            case "в архиве":
+                                if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
+                                {
+                                    doc = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
+                                    status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в архиве");
+                                    ArchiveDocument arc = new();
+                                    arc.CastFromDocument(doc);
+                                    db.ArchiveDocuments.Add(arc);
+                                    db.Documents.Remove(doc);
+                                    db.SaveChanges();
+                                    FillListByBaseData();
+                                }
+                                break;
+                        }
+                    }
+                };
+                var stack = new HorizontalStackLayout { Children = {fav, docName, cb, date, responsible} };
                 MenuFlyout menuElements = new MenuFlyout();
                 MenuFlyoutItem download = new MenuFlyoutItem() { Text = "Скачать" };
-                MenuFlyoutItem delete = new MenuFlyoutItem() { Text = "Удалить" };
-                MenuFlyoutItem archive = new MenuFlyoutItem() {Text = "В архив"};
+                MenuFlyoutItem resp = new MenuFlyoutItem() {Text = "Взять в работу"};
+                //MenuFlyoutItem ret = new MenuFlyoutItem() {Text = "Вернуть в работу"};
+                //MenuFlyoutItem delete = new MenuFlyoutItem() { Text = "Удалить" };
+                //MenuFlyoutItem archive = new MenuFlyoutItem() {Text = "В архив"};
                 download.Clicked += DownloadDoc;
-                delete.Clicked += DeleteDoc;
-                archive.Clicked += SendToArchive;
+                //delete.Clicked += DeleteDoc;
+                //archive.Clicked += SendToArchive;
+                resp.Clicked += SetMeAsResponsible;
+                //ret.Clicked += ReturnDocumentToWork;
                 menuElements.Add(download);
-                menuElements.Add(delete);
-                menuElements.Add(archive);
+                menuElements.Add(resp);
+                //menuElements.Add(ret);
+                //menuElements.Add(delete);
+                //menuElements.Add(archive);
                 FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -747,6 +877,7 @@ namespace Diplom
             var name = new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(90,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var status = new Label {FontSize = 16, WidthRequest = 200, Text="Статус", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата создания", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var responsible = new Label {FontSize = 16, WidthRequest = 200, Text="Ответственный", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var tap = new TapGestureRecognizer();
             tap.Tapped += (s, e) =>
             {
@@ -818,129 +949,29 @@ namespace Diplom
                             lbl.Text = lbl.Text + desc;
                         }
                         break;
+                    case "Ответственный":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = mail.OrderBy(z => z.GetResponsibleUserString);
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = mail.OrderByDescending(z => z.GetResponsibleUserString);
+                            lbl.Text += desc;
+                        }
+                        break;
                 }
 
             };
             name.GestureRecognizers.Add(tap);
             status.GestureRecognizers.Add(tap);
             date.GestureRecognizers.Add(tap);
+            responsible.GestureRecognizers.Add(tap);
             stack.Add(name);
             stack.Add(status);
             stack.Add(date);
-            Mail.Header = stack;
-        }
-
-        private void SetDelDocumentsDataTemplate()
-        {
-            Mail.ItemTemplate = new DataTemplate(() =>
-            {
-                ViewCell cell = new ViewCell();
-                Label docName = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label docStat = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                Label date = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
-                docName.SetBinding(Label.TextProperty, "DeletedDocumentName");
-                docStat.SetBinding(Label.TextProperty, "Creator.FIO");
-                date.SetBinding(Label.TextProperty, "CreationDate");
-                var stack = new HorizontalStackLayout { Children = {docName, docStat, date} };
-                MenuFlyout menuElements = new MenuFlyout();
-                MenuFlyoutItem reset = new MenuFlyoutItem() { Text = "Восстановить" };
-                MenuFlyoutItem delete = new MenuFlyoutItem() { Text = "Удалить" };
-                reset.Clicked += RestoreDoc;
-                delete.Clicked += FullDeleteDoc;
-                menuElements.Add(reset);
-                menuElements.Add(delete);
-                FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
-                return cell;
-            });
-        }
-
-        private void SetDelDocumentsHeader()
-        {
-            HorizontalStackLayout stack = new();
-            var name = new Label {FontSize = 16, WidthRequest = 200, Text="Название", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
-            var deleter = new Label {FontSize = 16, WidthRequest = 200, Text="Удаливший", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
-            var date = new Label {FontSize = 16, WidthRequest = 200, Text="Дата удаления", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
-            var tap = new TapGestureRecognizer();
-            tap.Tapped += (s, e) =>
-            {
-                Label lbl = s as Label;
-                HorizontalStackLayout parent = lbl.Parent as HorizontalStackLayout;
-                var lbls = parent.Children.Where(x => x is Label).ToList();
-                string asc = "↑";
-                string desc = "↓";
-                SortType sort = SortType.Descending;
-
-                foreach(var lable in lbls)
-                    {
-                        var l = lable as Label;
-                        if (l.Text.Contains(asc))
-                        {
-                            l.Text = l.Text.Remove(l.Text.IndexOf(asc));
-                            if (l == lbl)
-                            {
-                                sort = SortType.Descending;
-                            }
-                        }
-                        if (l.Text.Contains(desc))
-                        {
-                            l.Text = l.Text.Remove(l.Text.IndexOf(desc));
-                            if (l == lbl)
-                            {
-                                sort = SortType.Ascending;
-                            }
-                        }
-                    }
-                
-                var mail = Mail.ItemsSource as List<DeletedDocument>;
-                
-                switch (lbl.Text)
-                {
-                    case "Название":
-                        if (sort == SortType.Ascending)
-                        {
-                            Mail.ItemsSource = mail.OrderBy(x => x.DeletedDocumentName).ToList();
-                            lbl.Text += asc;
-                        }
-                        else
-                        {
-                            Mail.ItemsSource = mail.OrderByDescending(x => x.DeletedDocumentName).ToList();
-                            lbl.Text = lbl.Text + desc;
-                        }
-                        break;
-                    case "Удаливший":
-                        if (sort == SortType.Ascending)
-                        {
-                            Mail.ItemsSource = mail.OrderBy(x => x.Creator).ToList();
-                            lbl.Text += asc;
-                        }
-                        else
-                        {
-                            Mail.ItemsSource = mail.OrderByDescending(x => x.Creator).ToList();
-                            lbl.Text = lbl.Text + desc;
-                        }
-                        break;
-                    case "Дата удаления":
-                        if (sort == SortType.Ascending)
-                        {
-                            Mail.ItemsSource = mail.OrderBy(x => x.CreationDate).ToList();
-                            lbl.Text += asc;
-                        }
-                        else
-                        {
-                            Mail.ItemsSource = mail.OrderByDescending(x => x.CreationDate).ToList();
-                            lbl.Text = lbl.Text + desc;
-                        }
-                        break;
-                }
-
-            };
-            name.GestureRecognizers.Add(tap);
-            deleter.GestureRecognizers.Add(tap);
-            date.GestureRecognizers.Add(tap);
-            stack.Add(name);
-            stack.Add(deleter);
-            stack.Add(date);
+            stack.Add(responsible);
             Mail.Header = stack;
         }
 
@@ -1088,7 +1119,26 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
+         private async void SetMeAsResponsible(object sender, EventArgs e)
+        {
+            try
+            {
+                using AppContext db = new();
+                var context = (sender as MenuFlyoutItem).BindingContext as Document;
+                var doc = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
+                var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в работе");
+                doc.documentStatus = status;
+                doc.ResponsibleWorker = db.Users.Find(curUser.UserId);
+                db.SaveChanges();
+                FillListByBaseData();
 
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+        
         private async void RemoveFromFav(object target)
         {
             try
@@ -1213,121 +1263,11 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
-
-        private async void DeleteDoc(object sender, EventArgs e)
-        {
-            try
-            {
-                using AppContext db = new();
-                var context = (sender as MenuFlyoutItem).BindingContext as Document;
-                if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
-                {
-                    if (await DisplayAlert("Подтвердить действие", "Вы хотите удалить документ?", "Да", "Нет"))
-                    {
-                        var del = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
-                        var deletedStatus = db.DocumentStatuses.First(x => x.DocumentStatusName == "удален");
-                        var deldoc = new DeletedDocument();
-                        deldoc.CastFromDocument(del);
-                        deldoc.documentStatus = deletedStatus;
-                        db.DeletedDocuments.Add(deldoc);
-                        db.Documents.Remove(del);
-                        db.SaveChanges();
-                        GetDocs();
-                    }
-
-                }
-                else
-                {
-                    await DisplayAlert("Ошибка", "Недостаточно прав для удаления. (Вы можете удалять только созданные вами документы)", "Ок");
-                }
-                
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "Ок");
-            }
-        }
-
-        private async void RestoreDoc(object sender, EventArgs e)
-        {
-            try
-            {
-                using AppContext db = new();
-                var context = (sender as MenuFlyoutItem).BindingContext as DeletedDocument;
-                if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
-                {
-                    var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
-                    var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "восстановлен");
-                    var doc = deldoc.CastToDocument();
-                    doc.documentStatus = status;
-                    db.DeletedDocuments.Remove(deldoc);
-                    db.Documents.Add(doc);
-                    db.SaveChanges();
-                    GetDocs();
-                }
-                
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "Ок");
-            }
-        }
-
-        private async void FullDeleteDoc(object sender, EventArgs e)
-        {
-            try
-            {
-                using AppContext db = new();
-                var context = (sender as MenuFlyoutItem).BindingContext as DeletedDocument;
-                if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
-                {
-                    if (await DisplayAlert("Подтвердить действие", "Вы хотите безвозвратно удалить документ?", "Да", "Нет"))
-                    {
-                        var deldoc = db.DeletedDocuments.Include("Creator").Include("documentStatus").First(x => x.DeletedDocumentId == context.DeletedDocumentId);
-                        db.DeletedDocuments.Remove(deldoc);
-                        db.SaveChanges();
-                        GetDelDocs();
-                    }
-
-                }
-                else await DisplayAlert("Ошибка", "Недостаточно прав", "Ок");
-                
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "Ок");
-            }
-        }
-    
-        private async void SendToArchive(object sender, EventArgs e)
-        {
-            try
-            {
-                using AppContext db = new();
-                var context = (sender as MenuFlyoutItem).BindingContext as Document;
-                if (context.Creator.UserId == curUser.UserId || curUser.UserRole.RoleName == "админ")
-                {
-                    var doc = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
-                    var status = db.DocumentStatuses.First(x => x.DocumentStatusName == "в архиве");
-                    ArchiveDocument arc = new();
-                    arc.CastFromDocument(doc);
-                    db.ArchiveDocuments.Add(arc);
-                    db.Documents.Remove(doc);
-                    db.SaveChanges();
-                    GetDocs();
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "Ок");
-            }
-        }
-
         #endregion
     
         #region other
         // Надо дописывать каждый новый тип для listview, этот метод для поиска, а следующий для заполнения данными
-         private void FillListByType(string query)
+        private void FillListByType(string query)
         {
             using AppContext db = new();
             query = query.ToLower();
@@ -1365,6 +1305,7 @@ namespace Diplom
                     {
                         var docs = db.Documents.Include("Creator").Include("documentStatus").ToList();
                         List<Document> res = docs.Where(x => x.DocumentName.ToLower().Contains(query)).ToList();
+                        res.AddRange(docs.Where(z => z.documentStatus.DocumentStatusName.Contains(query)).ToList());
                         if (res.Count == 0)
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
@@ -1387,13 +1328,13 @@ namespace Diplom
                     break;
                 case ListType.DeletedDocuments:
                     {
-                        var docs = db.DeletedDocuments.Include("Creator").Include("documentStatus").ToList();
-                        List<DeletedDocument> res = docs.Where(x => x.DeletedDocumentName.ToLower().Contains(query)).ToList();
+                        var docs = db.Documents.Include("Creator").Include("documentStatus").Where(z => z.documentStatus.DocumentStatusName == "удален").ToList();
+                        List<Document> res = docs.Where(x => x.DocumentName.ToLower().Contains(query)).ToList();
                         if (res.Count == 0)
                         {
                             res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
                         }
-                        SetDelDocumentsDataTemplate();
+                        SetDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;
@@ -1417,6 +1358,18 @@ namespace Diplom
                         {
                             res.AddRange(favorites.Where(x => DateTime.Parse(x.GetCreationDateString).Date == date.Date).ToList());
                         }
+                        Mail.ItemsSource = res;
+                    }
+                    break;
+                case ListType.CompletedDocuments:
+                    {
+                        var docs = db.Documents.Include("Creator").Include("documentStatus").Where(z => z.documentStatus.DocumentStatusName.ToLower() == "выполнен").ToList();
+                        List<Document> res = docs.Where(x => x.DocumentName.ToLower().Contains(query)).ToList();
+                        if (res.Count == 0)
+                        {
+                            res = docs.Where(x => x.CreationDate.Date == date.Date).ToList();
+                        }
+                        SetDocumentsDataTemplate();
                         Mail.ItemsSource = res;
                     }
                     break;
@@ -1445,10 +1398,12 @@ namespace Diplom
                 case ListType.Favorite:
                     GetFav();
                     break;
+                case ListType.CompletedDocuments:
+                    GetCompletedDocs();
+                    break;
             }
         }
 
-        
         private void ChangeLVHeader(string name)
         {
             LVTitle.Text = name;

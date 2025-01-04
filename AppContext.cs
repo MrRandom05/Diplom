@@ -20,7 +20,6 @@ namespace Diplom
 
         public DbSet<FavoriteDocument> FavoriteDocuments { get; set; } = null!;
         public DbSet<ArchiveDocument> ArchiveDocuments { get; set; } = null!;
-        public DbSet<DeletedDocument> DeletedDocuments { get; set; } = null!; // убрать
         public DbSet<DocumentStatus> DocumentStatuses { get; set; } = null!;
         public DbSet<FavoriteMail> FavoriteMails { get; set; } = null!;
         public DbSet<UserStatus> UsersStatuses { get; set; } = null!;
@@ -57,7 +56,6 @@ namespace Diplom
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "создан"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в работе"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "удален"});
-            DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "восстановлен"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в архиве"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "подписан"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "на подписании"});

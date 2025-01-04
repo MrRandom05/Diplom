@@ -14,11 +14,19 @@
         </StackLayout>
 
         <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="25">
-            <Entry x:Name="Themetxt" Text="Тема: " Style="{StaticResource BaseAppEntry}" Margin="0,10,0,0" IsReadOnly="True" />
-            
+            <VerticalStackLayout>
+                <Entry x:Name="Themetxt" Text="Тема: " Style="{StaticResource BaseAppEntry}" Margin="0,10,0,0" IsReadOnly="True" />
+                <Border Style="{StaticResource EntryBorder}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout>
                 <Entry x:Name="Gettertxt" Text="Получатель: " Style="{StaticResource BaseAppEntry}" Margin="0,-10,0,0" IsReadOnly="True" />
+                <Border Style="{StaticResource EntryBorder}" />
+            </VerticalStackLayout>
             
+            <VerticalStackLayout>
                 <Entry x:Name="Sendertxt" Text="Отправитель: " Style="{StaticResource BaseAppEntry}" Margin="0,-10,0,0" IsReadOnly="True" />
+                <Border Style="{StaticResource EntryBorder}" />
+            </VerticalStackLayout>
 
             <ScrollView WidthRequest="500" HeightRequest="200">
                 <Editor x:Name="Texttxt" Placeholder="Текст..." PlaceholderColor="#ffffff" Background="{StaticResource BgAppColor}" IsReadOnly="True" TextColor="#ffffff" />

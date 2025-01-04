@@ -36,12 +36,18 @@
                        SearchButtonPressed="SearchByListViewType"
                        TextChanged="ClearSearchResults"/>
 
-            <ImageButton Source="profile.png"
+            <HorizontalStackLayout HorizontalOptions="End" Spacing="25" Margin="0,0,20,0">
+                <ImageButton Source="logout_white.png"
+                    Clicked="Exit"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50" />
+                <ImageButton Source="profile.png"
                     Clicked="OpenProfile"
                     BackgroundColor="Transparent"
-                    HorizontalOptions="End"
                     WidthRequest="50"
                     HeightRequest="50"/>
+            </HorizontalStackLayout>
 
         </Grid>
 
@@ -60,6 +66,9 @@
                         Style="{StaticResource ListViewSideButtons}"/>
                 <Button Text="Документы"
                         Clicked="LoadDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Выполненные документы"
+                        Clicked="LoadCompletedDocuments"
                         Style="{StaticResource ListViewSideButtons}"/>
                 <Button Text="Архив документов"
                         Clicked="LoadArchiveDocuments"

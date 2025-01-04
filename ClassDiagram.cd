@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Diplom.Entities.ArchiveDocument">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAQAAAAAAAAQAAgAAAAAAAAAAAEAAAAQAAIBA=</HashCode>
+      <FileName>Entities\ArchiveDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Department">
+    <Position X="12.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\Department.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.Docs" Collapsed="true">
+    <Position X="11.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAIAA=</HashCode>
+      <FileName>Entities\Docs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.Document">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAIwAAAAAAAAAAwAAAAAAAAAAAAAAEAAAgQAAKgA=</HashCode>
+      <FileName>Entities\Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.DocumentStatus">
+    <Position X="8.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAA=</HashCode>
+      <FileName>Entities\DocumentStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Favorite">
+    <Position X="7" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAgAAAAAAAAAABAAAAAAAACAQAgAQAAAAA=</HashCode>
+      <FileName>Entities\Favorite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.FavoriteDocument">
+    <Position X="14" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Entities\FavoriteDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.FavoriteMail">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgAAACAA=</HashCode>
+      <FileName>Entities\FavoriteMail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Position">
+    <Position X="8.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Entities\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.Role">
+    <Position X="10.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Entities\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.User">
+    <Position X="14" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAIAAACAAACAgAAAAAAgAEAAAAAgCAIAQCAAAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.UserMail">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAKAIAIAAAAAAAAAAAAAABAAQgAAIAAA=</HashCode>
+      <FileName>Entities\UserMail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplom.Entities.UserStatus">
+    <Position X="7" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Entities\UserStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Diplom.FavoriteType">
+    <Position X="14" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAQAAAAA=</HashCode>
+      <FileName>Entities\Favorite.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

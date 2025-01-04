@@ -3,12 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Diplom.ManagerPage">
 
-    <ContentPage.MenuBarItems>
-        <MenuBarItem Text="Добавить/Загрузить">
-            <MenuFlyoutItem Text="Загрузить документ" Clicked="LoadDoc" />
-            <MenuFlyoutItem Text="Новое письмо" Clicked="CreateMail" />
-        </MenuBarItem>
-    </ContentPage.MenuBarItems>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -26,7 +21,10 @@
               VerticalOptions="Fill"
               HorizontalOptions="Fill"
               Background="#13406D">
-
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Start" Margin="15,0,0,0" Spacing="10">
+                <ImageButton Style="{StaticResource TabButton}" Source="mail_white.png" WidthRequest="60" HeightRequest="60" Clicked="CreateMail" />
+                <ImageButton Style="{StaticResource TabButton}" Source="doc_white.png" Clicked="LoadDoc" />
+              </StackLayout>
             <SearchBar Placeholder="Поиск"
                        PlaceholderColor="#ffffff"
                        BackgroundColor="#3F6488"
@@ -39,12 +37,18 @@
                        SearchButtonPressed="SearchByListViewType"
                        TextChanged="ClearSearchResults"/>
 
-            <ImageButton Source="profile.png"
+             <HorizontalStackLayout HorizontalOptions="End" Spacing="25" Margin="0,0,20,0">
+                <ImageButton Source="logout_white.png"
+                    Clicked="Exit"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50" />
+                <ImageButton Source="profile.png"
                     Clicked="OpenProfile"
                     BackgroundColor="Transparent"
-                    HorizontalOptions="End"
                     WidthRequest="50"
                     HeightRequest="50"/>
+            </HorizontalStackLayout>
 
         </Grid>
 

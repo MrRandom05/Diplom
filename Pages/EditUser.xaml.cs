@@ -7,12 +7,31 @@ namespace Diplom
     public partial class EditUser : ContentPage
     {
         private User curUser;
+        private string imagePath;
         public EditUser(User userToEdit)
         {
             InitializeComponent();
             curUser = userToEdit;
+            imagePath = "";
         }
 
+        private async void LoadPhoto(object sender, EventArgs e)
+        {
+            try
+            {
+                var options = new PickOptions() { FileTypes = FilePickerFileType.Png };
+                var result = await FilePicker.Default.PickAsync(options);
+                if (result != null)
+                {
+                    ProfilePhoto.Source = result.FullPath;
+                    imagePath = result.FullPath;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
         private async void LoadRoles(object sender, EventArgs e)
         {
             try
@@ -25,7 +44,35 @@ namespace Diplom
                     rolestxt.Add(r.RoleName);
                 }
                 RolePick.ItemsSource = rolestxt;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+
+        private async void LoadPositions(object sender, EventArgs e)
+        {
+            try
+            {
+                using AppContext db = new();
+                var positions = db.Positions.Select(z => z.PositionName).ToList();
+                PositionPick.ItemsSource = positions;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
+        private async void LoadDeps(object sender, EventArgs e)
+        {
+            try
+            {
+                using AppContext db = new();
+                var deps = db.Departments.Select(z => z.DepartmentName).ToList();
+                DepartmentPick.ItemsSource = deps;
                 LoadUserInfo();
+                
             }
             catch (Exception ex)
             {
@@ -38,15 +85,32 @@ namespace Diplom
             try
             {
                 using AppContext db = new();
-                var user = db.Users.Include("UserRole").First(x => x.UserId == curUser.UserId);
+                var user = db.Users.Include("UserRole").Include("Department").Include("Position").First(x => x.UserId == curUser.UserId);
                 if (user != null)
                 {
                     Logintxt.Text = user.Login;
                     FIOtxt.Text = user.FIO;
                     Passwordtxt.Text = user.Password;
-                    var list = RolePick.ItemsSource as List<string>;
-                    int i = list.IndexOf(user.UserRole.RoleName);
-                    RolePick.SelectedIndex = i;
+                    Telephonetxt.Text = user.Telephone;
+                    Emailtxt.Text = user.Email;
+                    RolePick.SelectedIndex = (RolePick.ItemsSource as List<string>).IndexOf(user.UserRole.RoleName);
+                    DepartmentPick.SelectedIndex = (DepartmentPick.ItemsSource as List<string>).IndexOf(user.Department.DepartmentName);
+                    PositionPick.SelectedIndex = (PositionPick.ItemsSource as List<string>).IndexOf(user.Position.PositionName);
+                    if (user.Photo != null)
+                    {
+                        var path = $"{FileSystem.Current.AppDataDirectory}/{user.Login}_{user.UserId}.png";
+                        if (!File.Exists(path))
+                        {
+                            File.WriteAllBytes(path, user.Photo);
+                            ProfilePhoto.Source = path;
+                        }
+                        else
+                        {
+                            File.Delete(path);
+                            File.WriteAllBytes(path, user.Photo);
+                            ProfilePhoto.Source = path;
+                        }
+                    }
                 }
                 else
                 {

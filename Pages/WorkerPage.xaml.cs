@@ -17,6 +17,17 @@ namespace Diplom
         }
 
         #region delegates for xaml
+        private async void Exit(object sender, EventArgs e)
+        {
+            try
+            {
+                await Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "Ок");
+            }
+        }
          private async void LoadFavourite(object sender, EventArgs e)
         {
             try
@@ -823,11 +834,7 @@ namespace Diplom
                     {
                         var del = db.Documents.Include("Creator").Include("documentStatus").First(x => x.DocumentId == context.DocumentId);
                         var deletedStatus = db.DocumentStatuses.First(x => x.DocumentStatusName == "удален");
-                        var deldoc = new DeletedDocument();
-                        deldoc.CastFromDocument(del);
-                        deldoc.documentStatus = deletedStatus;
-                        db.DeletedDocuments.Add(deldoc);
-                        db.Documents.Remove(del);
+                        del.documentStatus = deletedStatus;
                         db.SaveChanges();
                         GetDocs();
                     }

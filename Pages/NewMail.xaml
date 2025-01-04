@@ -14,7 +14,10 @@
         </StackLayout>
 
         <StackLayout HorizontalOptions="Center" Grid.Row="1" Spacing="25">
-            <Entry x:Name="Themetxt" Placeholder="Тема" Style="{StaticResource BaseAppEntry}" Margin="0,20,0,0" />
+            <VerticalStackLayout>
+                <Entry x:Name="Themetxt" Placeholder="Тема" Style="{StaticResource BaseAppEntry}" Margin="0,20,0,0" />
+                <Border Style="{StaticResource EntryBorder}" />
+            </VerticalStackLayout>
             <VerticalStackLayout>
                 <Label Text="Кому" />
                 <Picker x:Name="GetterPick" WidthRequest="500" Loaded="LoadGetters" Background="{StaticResource BgAppColor}" TextColor="#ffffff" />

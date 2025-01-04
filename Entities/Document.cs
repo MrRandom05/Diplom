@@ -14,7 +14,17 @@ namespace Diplom.Entities
         public byte[] DocumentData { get; set; }
         public DocumentStatus documentStatus { get; set; }
         public User Creator { get; set; }
+        public User? ResponsibleWorker { get; set; } = null;
         public DateTime CreationDate { get; set; }
+
+        [NotMapped]
+        public string GetResponsibleUserString
+        {
+            get
+            {
+                return ResponsibleWorker == null ? "Отсутствует" : ResponsibleWorker.FIO;
+            }
+        }
         public bool IsFavourite(User user)
         {
             using AppContext db = new();
