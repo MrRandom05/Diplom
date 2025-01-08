@@ -51,7 +51,7 @@ namespace Diplom
             Departments.Add(Department.Of("Технический отдел"));
             Departments.Add(Department.Of("IT отдел"));
             UsersStatuses.Add(UserStatus.Of("активен"));
-            UsersStatuses.Add(UserStatus.Of("отстранен"));
+            UsersStatuses.Add(UserStatus.Of("заблокирован"));
             UsersStatuses.Add(UserStatus.Of("удален"));
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "создан"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "в работе"});

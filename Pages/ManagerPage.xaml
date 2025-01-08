@@ -68,6 +68,9 @@
                 <Button Text="Документы"
                         Clicked="LoadDocuments"
                         Style="{StaticResource ListViewSideButtons}"/>
+                <Button Text="Выполненные документы"
+                        Clicked="LoadCompletedDocuments"
+                        Style="{StaticResource ListViewSideButtons}"/>
                 <Button Text="Избранное"
                         Clicked="LoadFavourite"
                         Style="{StaticResource ListViewSideButtons}"/>

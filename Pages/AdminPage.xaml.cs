@@ -703,6 +703,7 @@ namespace Diplom
             var login = new Label {FontSize = 16, WidthRequest = 200, Text="Логин", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var fio = new Label {FontSize = 16, WidthRequest = 200, Text="ФИО", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var role = new Label {FontSize = 16, WidthRequest = 200, Text="Роль", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
+            var status = new Label {FontSize = 16, WidthRequest = 200, Text="Статус", Margin = new Thickness(30,0,0,0), HorizontalTextAlignment = TextAlignment.Center};
             var tap = new TapGestureRecognizer();
             tap.Tapped += async (s, e) =>
             {
@@ -774,14 +775,28 @@ namespace Diplom
                             lbl.Text = lbl.Text + desc;
                         }
                         break;
+                    case "Статус":
+                        if (sort == SortType.Ascending)
+                        {
+                            Mail.ItemsSource = users.OrderBy(x => x.UserStatus.UserStatusName).ToList();
+                            lbl.Text += asc;
+                        }
+                        else
+                        {
+                            Mail.ItemsSource = users.OrderByDescending(x => x.UserStatus.UserStatusName).ToList();
+                            lbl.Text = lbl.Text + desc;
+                        }
+                        break;
                 }
 
             };
             fio.GestureRecognizers.Add(tap);
             login.GestureRecognizers.Add(tap);
             role.GestureRecognizers.Add(tap);
+            status.GestureRecognizers.Add(tap);
             stack.Add(login);
             stack.Add(fio);
+            stack.Add(status);
             stack.Add(role);
             Mail.Header = stack;
         }
@@ -794,10 +809,12 @@ namespace Diplom
                 Label login = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Label fio = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 Label role = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
+                Label status = new Label { FontSize = 16, WidthRequest = 200, LineBreakMode = LineBreakMode.TailTruncation, Margin = new Thickness(30, 0, 0, 0), HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center };
                 login.SetBinding(Label.TextProperty, "Login");
                 fio.SetBinding(Label.TextProperty, "FIO");
                 role.SetBinding(Label.TextProperty, "UserRole.RoleName");
-                var stack = new HorizontalStackLayout { Children = {login, fio, role} };
+                status.SetBinding(Label.TextProperty, "UserStatus.UserStatusName");
+                var stack = new HorizontalStackLayout { Children = {login, fio, status, role} };
                 var tap = new TapGestureRecognizer();
                 tap.Tapped += async (s, e) =>
                 {
@@ -805,6 +822,38 @@ namespace Diplom
                     await Navigation.PushAsync(new EditUser(user));
                 };
                 stack.GestureRecognizers.Add(tap);
+                MenuFlyout menuElements = new MenuFlyout();
+                MenuFlyoutItem delete = new MenuFlyoutItem() { Text = "Удалить" };
+                MenuFlyoutItem ban = new MenuFlyoutItem() { Text = "Заблокировать" };
+                MenuFlyoutItem unban = new MenuFlyoutItem() { Text = "Разблокировать" };
+                delete.Clicked += (s, e) =>
+                {
+                    var user = (s as MenuFlyoutItem).BindingContext as User;
+                    using AppContext db = new();
+                    var del = db.Users.First(z => z.UserId == user.UserId);
+                    del.UserStatus = db.UsersStatuses.First(z => z.UserStatusName == "удален");
+                    db.SaveChanges();
+                };
+                ban.Clicked += (s, e) =>
+                {
+                    var user = (s as MenuFlyoutItem).BindingContext as User;
+                    using AppContext db = new();
+                    var del = db.Users.First(z => z.UserId == user.UserId);
+                    del.UserStatus = db.UsersStatuses.First(z => z.UserStatusName == "заблокирован");
+                    db.SaveChanges();
+                };
+                unban.Clicked += (s, e) =>
+                {
+                    var user = (s as MenuFlyoutItem).BindingContext as User;
+                    using AppContext db = new();
+                    var del = db.Users.First(z => z.UserId == user.UserId);
+                    del.UserStatus = db.UsersStatuses.First(z => z.UserStatusName == "активен");
+                    db.SaveChanges();
+                };
+                menuElements.Add(delete);
+                menuElements.Add(ban);
+                menuElements.Add(unban);
+                FlyoutBase.SetContextFlyout(stack, menuElements);
                 cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
