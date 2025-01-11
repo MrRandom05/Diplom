@@ -18,7 +18,7 @@ namespace Diplom
         }
 
         #region delegates for xaml
-         private async void LoadFavourite(object sender, EventArgs e)
+        private async void LoadFavourite(object sender, EventArgs e)
         {
             try
             {
@@ -31,6 +31,12 @@ namespace Diplom
             }
         }
  
+        private void LoadCompletedDocuments(object sender, EventArgs e)
+        {
+            GetCompletedDocs();
+            ChangeLVHeader("Выполненные документы");
+        }
+
         private void LoadInputMail(object sender, EventArgs e)
         {
             GetInputMail();

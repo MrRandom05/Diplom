@@ -28,7 +28,7 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
-         private async void LoadFavourite(object sender, EventArgs e)
+        private async void LoadFavourite(object sender, EventArgs e)
         {
             try
             {
@@ -40,7 +40,11 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
- 
+        private void LoadCompletedDocuments(object sender, EventArgs e)
+        {
+            GetCompletedDocs();
+            ChangeLVHeader("Выполненные документы");
+        }
         private void LoadInputMail(object sender, EventArgs e)
         {
             GetInputMail();
@@ -164,7 +168,25 @@ namespace Diplom
                 await DisplayAlert("Ошибка", ex.Message, "Ок");
             }
         }
- 
+         private void GetCompletedDocs()
+        {
+            try
+            {
+                using AppContext db = new();
+                var docs = db.Documents.Include("Creator").Include("documentStatus")
+                .Where(z => z.documentStatus.DocumentStatusName.ToLower() == "выполнен").ToList();
+                if (docs != null)
+                {
+                    SetDocumentsHeader();
+                    SetDocumentsDataTemplate();
+                    Mail.ItemsSource = docs;
+                    curListViewType = ListType.CompletedDocuments;
+                    ChangeLVRowCount(docs.Count());
+                }
+            }
+            catch (Exception ex) {}
+        }
+
         private void GetInputMail()
         {
             try

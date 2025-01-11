@@ -77,6 +77,7 @@
         </StackLayout>
         <Button WidthRequest="250" Text="Сохранить" Clicked="EditProfile" Margin="0,50,0,0" />
     </StackLayout>
+    <Image Source="no_text_logo.png" WidthRequest="100" HeightRequest="100" Margin="10, 0, 10, 0" Grid.Row="1" HorizontalOptions="Start" VerticalOptions="End" />
     </Grid>
 
 </ContentPage>
