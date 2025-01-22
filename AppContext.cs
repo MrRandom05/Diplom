@@ -61,7 +61,16 @@ namespace Diplom
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "на подписании"});
             DocumentStatuses.Add(new DocumentStatus() {DocumentStatusName = "выполнен"});
             SaveChanges();
-            Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First(), "88005553535", "wwaaa@ya.com", null, Departments.First(), Positions.First()));
+            var man = Roles.First(z => z.RoleName == "руководитель");
+            var work = Roles.First(z => z.RoleName == "работник");
+            var man1 = Positions.First(z => z.PositionName == "Старший менеджер");
+            var work1 = Positions.First(z => z.PositionName == "Рядовой сотрудник");
+            Users.Add(User.Of(Roles.First(), "1", "1", "Кузьмин Н. С.", UsersStatuses.First(), "+8 (888) 660-90-00", "wwaaa@ya.com", null, Departments.First(), Positions.First()));
+            Users.Add(User.Of(man, "2", "2", "Иванов Н. С.", UsersStatuses.First(), "+8 (568) 678-98-70", "wwaaa1243@ya.com", null, Departments.First(), man1));
+            Users.Add(User.Of(work, "3", "3", "Сидоров Н. С.", UsersStatuses.First(), "+8 (868) 660-34-21", "wwa2354aa@ya.com", null, Departments.First(), work1));
+            SaveChanges();
+            UsersMails.Add(new UserMail() { Getter = Users.First(), SendDate = DateTime.Now.Date, Sender = Users.Last(), UserEmailTitle = "Тест", UserEmailBody = "Отправка писем работает"});
+            UsersMails.Add(new UserMail() { Getter = Users.Last(), SendDate = DateTime.Now.Date, Sender = Users.First(), UserEmailTitle = "Обратный тест", UserEmailBody = "Отправка писем работает"});
             SaveChanges();
         }
     }
