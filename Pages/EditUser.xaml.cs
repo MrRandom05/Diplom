@@ -99,17 +99,22 @@ namespace Diplom
                     if (user.Photo != null)
                     {
                         var path = $"{FileSystem.Current.AppDataDirectory}/{user.Login}_{user.UserId}.png";
-                        if (!File.Exists(path))
+                        // if (!File.Exists(path))
+                        // {
+                        //     File.WriteAllBytes(path, user.Photo);
+                        //     ProfilePhoto.Source = path;
+                        // }
+                        // else
+                        // {
+                        //     File.Delete(path);
+                        //     File.WriteAllBytes(path, user.Photo);
+                        //     ProfilePhoto.Source = path;
+                        // }
+                        ProfilePhoto.Source = ImageSource.FromStream(() =>
                         {
-                            File.WriteAllBytes(path, user.Photo);
-                            ProfilePhoto.Source = path;
-                        }
-                        else
-                        {
-                            File.Delete(path);
-                            File.WriteAllBytes(path, user.Photo);
-                            ProfilePhoto.Source = path;
-                        }
+                           MemoryStream ms = new MemoryStream(curUser.Photo);
+                           return ms; 
+                        });
                     }
                 }
                 else

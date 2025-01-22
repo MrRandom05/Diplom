@@ -1,98 +1,168 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Diplom.Entities.ArchiveDocument">
-    <Position X="10.5" Y="2" Width="1.5" />
+    <Position X="9.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAQAAAAAAAAQAAgAAAAAAAAAAAEAAAAQAAIBA=</HashCode>
       <FileName>Entities\ArchiveDocument.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Creator" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.Department">
-    <Position X="12.25" Y="5.75" Width="1.5" />
+    <Position X="19.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Entities\Department.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diplom.Entities.Docs" Collapsed="true">
-    <Position X="11.5" Y="1" Width="1.5" />
+    <Position X="9.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAIAA=</HashCode>
       <FileName>Entities\Docs.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diplom.Entities.Document">
-    <Position X="12.25" Y="2" Width="1.5" />
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <AssociationLine Name="Creator" Type="Diplom.Entities.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.443" Y="0.164" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ResponsibleWorker" Type="Diplom.Entities.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.4" Y="0.966" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>QAAAAIwAAAAAAAAAAwAAAAAAAAAAAAAAEAAAgQAAKgA=</HashCode>
       <FileName>Entities\Document.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="documentStatus" />
+      <Property Name="Creator" />
+      <Property Name="ResponsibleWorker" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.Entities.DocumentStatus">
-    <Position X="8.75" Y="1.25" Width="1.5" />
+    <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAA=</HashCode>
       <FileName>Entities\DocumentStatus.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diplom.Favorite">
-    <Position X="7" Y="3.25" Width="1.5" />
+    <Position X="9.25" Y="8" Width="1.5" />
+    <AssociationLine Name="Document" Type="Diplom.Entities.Document">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.4" Y="0.227" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAgAAAAgAAAAAAAAAABAAAAAAAACAQAgAQAAAAA=</HashCode>
       <FileName>Entities\Favorite.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Document" />
+      <Property Name="Mail" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.FavoriteDocument">
-    <Position X="14" Y="1" Width="1.5" />
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <AssociationLine Name="FavoritedDocument" Type="Diplom.Entities.Document">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.067" Y="0.143" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
       <FileName>Entities\FavoriteDocument.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FavoritedDocument" />
+      <Property Name="FavoritedUser" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.FavoriteMail">
-    <Position X="7" Y="1.5" Width="1.5" />
+    <Position X="16.75" Y="10.25" Width="1.5" />
+    <AssociationLine Name="FavoritedMail" Type="Diplom.Entities.UserMail">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.225" Y="0.133" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgAAACAA=</HashCode>
       <FileName>Entities\FavoriteMail.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FavoritedMail" />
+      <Property Name="FavoritedUser" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.Position">
-    <Position X="8.75" Y="5.75" Width="1.5" />
+    <Position X="19.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>Entities\Position.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diplom.Entities.Role">
-    <Position X="10.5" Y="5.5" Width="1.5" />
+    <Position X="19.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Entities\Role.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Diplom.Entities.User">
-    <Position X="14" Y="4" Width="1.5" />
+    <Position X="15.75" Y="5.5" Width="1.5" />
+    <AssociationLine Name="UserStatus" Type="Diplom.Entities.UserStatus" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.125" Y="8.209" />
+        <Point X="17.125" Y="9.594" />
+        <Point X="19.25" Y="9.594" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Position" Type="Diplom.Position" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17" Y="5.5" />
+        <Point X="17" Y="3.535" />
+        <Point X="19.25" Y="3.535" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AgAAAIAAACAAACAgAAAAAAgAEAAAAAgCAIAQCAAAAAA=</HashCode>
       <FileName>Entities\User.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UserRole" />
+      <Property Name="UserStatus" />
+      <Property Name="Department" />
+      <Property Name="Position" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.Entities.UserMail">
-    <Position X="8.75" Y="2.75" Width="1.5" />
+    <Position X="14" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAKAIAIAAAAAAAAAAAAAABAAQgAAIAAA=</HashCode>
       <FileName>Entities\UserMail.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sender" />
+      <Property Name="Getter" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Diplom.Entities.UserStatus">
-    <Position X="7" Y="5.75" Width="1.5" />
+    <Position X="19.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>Entities\UserStatus.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="Diplom.FavoriteType">
-    <Position X="14" Y="2.75" Width="1.5" />
+    <Position X="6.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAQAAAAA=</HashCode>
       <FileName>Entities\Favorite.cs</FileName>

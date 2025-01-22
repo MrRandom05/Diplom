@@ -1,6 +1,5 @@
 using Diplom.Entities;
 using Microsoft.EntityFrameworkCore;
-using CommunityToolkit.Maui;
 
 
 namespace Diplom
@@ -16,6 +15,12 @@ namespace Diplom
             imagePath = "";
             LoadUserInfo();
         }
+
+        private void DisposeFile(object sender, EventArgs e)
+        {
+            ProfilePhoto.Source = null;
+        }
+
         private async void LoadUserInfo()
         {
             try
@@ -35,17 +40,22 @@ namespace Diplom
                     if (user.Photo != null)
                     {
                         var path = $"{FileSystem.Current.AppDataDirectory}/{user.Login}_{user.UserId}.png";
-                        if (!File.Exists(path))
+                        // if (!File.Exists(path))
+                        // {
+                        //     File.WriteAllBytes(path, user.Photo);
+                        //     ProfilePhoto.Source = path;
+                        // }
+                        // else
+                        // {
+                        //     File.OpenHandle(path);
+                        //     File.WriteAllBytes(path, user.Photo);
+                        //     ProfilePhoto.Source = path;
+                        // }
+                        ProfilePhoto.Source = ImageSource.FromStream(() =>
                         {
-                            File.WriteAllBytes(path, user.Photo);
-                            ProfilePhoto.Source = path;
-                        }
-                        else
-                        {
-                            File.Delete(path);
-                            File.WriteAllBytes(path, user.Photo);
-                            ProfilePhoto.Source = path;
-                        }
+                           MemoryStream ms = new MemoryStream(curUser.Photo);
+                           return ms; 
+                        });
                     }
                 }
                 else
@@ -80,34 +90,39 @@ namespace Diplom
                         }
                         else
                         {
-                            user.Login = Logintxt.Text;
-                            user.Password = Passwordtxt.Text;
-                            var telarr = Telephonetxt.Text.Where(x => char.IsDigit(x) == true);
-                            string tel = "";
-                            foreach(var t in telarr)
+                            var old = await DisplayPromptAsync("Подтвердите смену пароля", "Старый пароль:", "Ок", "Отмена");
+                            if (old == curUser.Password)
                             {
-                                tel += t;
-                            }
-                            if (string.IsNullOrEmpty(tel) || tel.Count() < 11)
-                            {
-                                await DisplayAlert("Ошибка", "Неверный формат телефона", "Ок");
-                            }
-                            else
-                            {
-                                user.Telephone = Telephonetxt.Text;
-                                if (reg.IsMatch(Emailtxt.Text))
+                                user.Password = Passwordtxt.Text;
+                                user.Login = Logintxt.Text;
+                                var telarr = Telephonetxt.Text.Where(x => char.IsDigit(x) == true);
+                                string tel = "";
+                                foreach (var t in telarr)
                                 {
-                                    user.Email = Emailtxt.Text;
-                                    if (!string.IsNullOrEmpty(imagePath))
-                                    {
-                                        user.Photo = File.ReadAllBytes(imagePath);
-                                    }
-                                    db.SaveChanges();
-                                    await DisplayAlert("Успех", "Данные сохранены", "Ок");
-                                    await Navigation.PopAsync();
+                                    tel += t;
                                 }
-                                else await DisplayAlert("Ошибка", "Неверный формат почты", "Ок");
+                                if (string.IsNullOrEmpty(tel) || tel.Count() < 11)
+                                {
+                                    await DisplayAlert("Ошибка", "Неверный формат телефона", "Ок");
+                                }
+                                else
+                                {
+                                    user.Telephone = Telephonetxt.Text;
+                                    if (reg.IsMatch(Emailtxt.Text))
+                                    {
+                                        user.Email = Emailtxt.Text;
+                                        if (!string.IsNullOrEmpty(imagePath))
+                                        {
+                                            user.Photo = File.ReadAllBytes(imagePath);
+                                        }
+                                        db.SaveChanges();
+                                        await DisplayAlert("Успех", "Данные сохранены", "Ок");
+                                        await Navigation.PopAsync();
+                                    }
+                                    else await DisplayAlert("Ошибка", "Неверный формат почты", "Ок");
+                                }
                             }
+                            else await DisplayAlert("Ошибка", "Неверный пароль", "Ок");
 
                         }
                     }
@@ -119,7 +134,7 @@ namespace Diplom
                         
                         if (db.Users.Where(x => x.Login == Logintxt.Text).Any() && Logintxt.Text != curUser.Login)
                         {
-                            await DisplayAlert("Успех", "Данный логин занят", "Ок");
+                            await DisplayAlert("Ошибка", "Данный логин занят", "Ок");
                         }
                         else
                         {

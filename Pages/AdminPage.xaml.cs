@@ -522,7 +522,9 @@ namespace Diplom
                 
                 var mail = Mail.ItemsSource as List<Document>;
                 
-                switch (lbl.Text)
+               try
+               {
+                 switch (lbl.Text)
                 {
                     case "Название":
                         if (sort == SortType.Ascending)
@@ -573,6 +575,8 @@ namespace Diplom
                         }
                         break;
                 }
+               }
+               catch (Exception ex) {}
 
             };
             name.GestureRecognizers.Add(tap);
