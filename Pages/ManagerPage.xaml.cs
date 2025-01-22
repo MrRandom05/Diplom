@@ -234,7 +234,7 @@ namespace Diplom
             try
             {
                 using AppContext db = new();
-                var docs = db.Documents.Include("Creator").Include("documentStatus").ToList();
+                var docs = db.Documents.Include("Creator").Include("documentStatus").Where(z => z.documentStatus.DocumentStatusName != "удален" && z.documentStatus.DocumentStatusName != "выполнен").ToList();
                 if (docs != null)
                 {
                     SetDocumentsHeader();
@@ -690,12 +690,12 @@ namespace Diplom
                     case "Кому":
                         if (sort == SortType.Ascending)
                         {
-                            Mail.ItemsSource = mail.OrderBy(x => x.Getter).ToList();
+                            Mail.ItemsSource = mail.OrderBy(x => x.Getter.FIO).ToList();
                             lbl.Text += asc;
                         }
                         else
                         {
-                            Mail.ItemsSource = mail.OrderByDescending(x => x.Getter).ToList();
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.Getter.FIO).ToList();
                             lbl.Text = lbl.Text + desc;
                         }
                         break;
@@ -917,7 +917,9 @@ namespace Diplom
                 
                 var mail = Mail.ItemsSource as List<Document>;
                 
-                switch (lbl.Text)
+               try
+               {
+                 switch (lbl.Text)
                 {
                     case "Название":
                         if (sort == SortType.Ascending)
@@ -934,12 +936,12 @@ namespace Diplom
                     case "Статус":
                         if (sort == SortType.Ascending)
                         {
-                            Mail.ItemsSource = mail.OrderBy(x => x.documentStatus).ToList();
+                            Mail.ItemsSource = mail.OrderBy(x => x.documentStatus.DocumentStatusName).ToList();
                             lbl.Text += asc;
                         }
                         else
                         {
-                            Mail.ItemsSource = mail.OrderByDescending(x => x.documentStatus).ToList();
+                            Mail.ItemsSource = mail.OrderByDescending(x => x.documentStatus.DocumentStatusName).ToList();
                             lbl.Text = lbl.Text + desc;
                         }
                         break;
@@ -968,6 +970,8 @@ namespace Diplom
                         }
                         break;
                 }
+               }
+               catch (Exception ex) {}
 
             };
             name.GestureRecognizers.Add(tap);
@@ -998,7 +1002,7 @@ namespace Diplom
                 download.Clicked += DownloadDoc;
                 menuElements.Add(download);
                 FlyoutBase.SetContextFlyout(stack, menuElements);
-                cell.View = stack;
+                cell.View = new VerticalStackLayout() {Children = {new Border(), stack}};
                 return cell;
             });
         }
@@ -1091,6 +1095,7 @@ namespace Diplom
             stack.Add(date);
             Mail.Header = stack;
         }
+       
         #endregion
     
         #region Context actions

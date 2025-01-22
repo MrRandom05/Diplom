@@ -228,7 +228,7 @@ namespace Diplom
             try
             {
                 using AppContext db = new();
-                var docs = db.Documents.Include("Creator").Include("documentStatus").ToList();
+                var docs = db.Documents.Include("Creator").Include("documentStatus").Where(z => z.documentStatus.DocumentStatusName != "удален" && z.documentStatus.DocumentStatusName != "выполнен").ToList();
                 if (docs != null)
                 {
                     SetDocumentsHeader();
